@@ -266,17 +266,14 @@ table.tb tr.sum td{border-bottom:0;border-top:1px solid var(--edge2);color:var(-
 <div class="panel" id="p-pjpf">
   <div class="kpis k3">
     <div class="kpi alt"><span>IRRF a reter agora</span><strong id="k-pf-irrf">—</strong><em id="k-pf-irrf-e">—</em></div>
-    <div class="kpi"><span>Líquido ao locador</span><strong id="k-pf-liq">—</strong><em id="k-pf-liq-e">recibo menos IRRF</em></div>
+    <div class="kpi"><span>Líquido ao locador</span><strong id="k-pf-liq">—</strong><em>aluguel menos IRRF</em></div>
     <div class="kpi"><span>Imposto do mês</span><strong id="k-pf-mes">—</strong><em>após a redução legal</em></div>
   </div>
 
   <div class="grid">
     <div class="block">
       <h2>Dados do pagamento</h2>
-      <div class="row2">
-        <div class="fld"><label>Valor total do aluguel (Recibo)</label><input type="number" id="a-valor" value="6000.00" step="0.01" min="0"></div>
-        <div class="fld"><label>Juros e multa<u>compõem a base tributável</u></label><input type="number" id="a-juros" value="0" step="0.01" min="0"></div>
-      </div>
+      <div class="fld"><label>Valor do aluguel deste pagamento</label><input type="number" id="a-valor" value="6000.00" step="0.01" min="0"></div>
       <h3 class="sub">Deduções do rendimento — ônus do locador</h3>
       <div class="row2">
         <div class="fld"><label>IPTU e taxas</label><input type="number" id="a-iptu" value="0" step="0.01" min="0"></div>
@@ -536,30 +533,26 @@ $('#p-alug').addEventListener('input',e=>{ if(e.target.matches('input,select') &
 
 /* ================= ALUGUEL PJ → PF ================= */
 function calcPF(){
-  const valor=num('#a-valor'), juros=num('#a-juros');
-  const iptu=num('#a-iptu'), cond=num('#a-cond'), adm=num('#a-adm');
+  const valor=num('#a-valor'), iptu=num('#a-iptu'), cond=num('#a-cond'), adm=num('#a-adm');
   const deps=Math.max(0,Math.floor(num('#a-dep'))), pensao=num('#a-pensao');
   const acRend=num('#a-acrend'), acIrrf=num('#a-acirrf'), outros=num('#a-outros');
   const modo=$('#a-modo').value;
 
-  const totalPago=r2(valor+juros);
   const dedImovel=r2(iptu+cond+adm);
-  const rendDoc=Math.max(0,r2(totalPago-dedImovel));
+  const rendDoc=Math.max(0,r2(valor-dedImovel));
   const rendMes=r2(rendDoc+acRend);
   const rendRedutor=r2(rendMes+outros);
 
   const c=irpf(rendMes,{deps:deps,pensao:pensao,modo:modo,rendaRedutor:rendRedutor});
   let aReter=r2(c.imposto-acIrrf); if(aReter<0)aReter=0;
-  const liquido=r2(totalPago-aReter);
+  const liquido=r2(valor-aReter);
 
   $('#k-pf-irrf').textContent=rs(aReter);
   $('#k-pf-irrf-e').textContent=c.aliq===0?'base na faixa isenta':'faixa de '+br(c.aliq)+'%';
   $('#k-pf-liq').textContent=rs(liquido);
-  $('#k-pf-liq-e').textContent=juros>0?'inclui '+rs(juros)+' de juros e multa':'recibo menos IRRF';
   $('#k-pf-mes').textContent=rs(c.imposto);
 
-  let h=L('Valor total do aluguel (Recibo)',rs(valor))
-   +(juros>0?L('(+) Juros e multa',rs(juros))+L('Total pago ao locador',rs(totalPago)):'')
+  let h=L('Valor do aluguel',rs(valor))
    +(dedImovel>0?L('(−) IPTU, condomínio e administração',rs(dedImovel),'muted'):'')
    +L('Rendimento tributável deste pagamento',rs(rendDoc))
    +(acRend>0?L('(+) já pago no mês',rs(acRend),'muted')+L('Rendimento do mês',rs(rendMes)):'')
@@ -581,8 +574,6 @@ function calcPF(){
     h+='<div class="flag">Faixa de redução parcial (R$ 5.000,01 a R$ 7.350,00). O redutor decresce conforme a renda sobe e chega a zero em R$ 7.350,00.</div>';
   if(acRend>0)
     h+='<div class="flag ok">Segundo pagamento no mês: o imposto foi recalculado sobre o rendimento acumulado e o já retido foi abatido, conforme a regra de recálculo por fonte pagadora.</div>';
-  if(juros>0)
-    h+='<div class="flag ok">Juros e multa de '+rs(juros)+' integram o rendimento tributável do locador, junto com o aluguel. O IRRF incide sobre o conjunto — não apenas sobre o valor do recibo.</div>';
   if(modo!=='legais' && c.desconto===SIMPL){
     const semSimpl=irpf(rendMes,{deps:deps,pensao:pensao,modo:'legais',rendaRedutor:rendRedutor});
     h+='<div class="flag">Ponto controverso: há entendimento de que o desconto simplificado não se aplica ao pagamento de aluguel, valendo apenas a tabela progressiva. Por essa leitura, o imposto do mês seria '+rs(semSimpl.imposto)+'. Defina o critério com a assessoria tributária antes de padronizar.</div>';
