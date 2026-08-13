@@ -21,9 +21,12 @@
 body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
 .wrap{max-width:1080px;margin:0 auto;padding:22px}
 
-.top{margin-bottom:20px}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:20px}
 .top h1{font-family:var(--cond);font-weight:700;font-size:32px;letter-spacing:.01em;color:var(--gold);margin:0;line-height:1.05}
 .top p{margin:4px 0 0;color:var(--gold);opacity:.72;font-family:var(--cond);font-weight:600;font-size:16px}
+.top a{font-family:var(--cond);font-weight:600;font-size:13px;color:var(--muted);text-decoration:none;
+  border:1px solid var(--edge2);border-radius:4px;padding:8px 14px;white-space:nowrap}
+.top a:hover{color:var(--gold);border-color:var(--gold)}
 
 .modes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
 .modes button{position:relative;font-family:var(--cond);font-weight:600;font-size:15px;padding:15px 16px 13px;
@@ -55,6 +58,7 @@ h3.sub{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transfor
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .fld{margin-bottom:12px}
 .fld label{display:block;font-family:var(--cond);font-weight:600;font-size:12.5px;color:var(--gold);opacity:.8;margin-bottom:5px}
+.fld label u{text-decoration:none;font-family:var(--mono);font-weight:400;font-size:10px;color:#7B8189;display:block;margin-top:2px}
 .fld input,.fld select{width:100%;font-family:var(--mono);font-size:14.5px;padding:9px 11px;border:1px solid var(--edge2);
   border-radius:4px;background:#080808;color:var(--txt)}
 .fld input:focus,.fld select:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 2px rgba(242,183,5,.18)}
@@ -117,12 +121,15 @@ table.tb tr.sum td{border-bottom:0;border-top:1px solid var(--edge2);color:var(-
 <div class="wrap">
 
 <div class="top">
-  <h1>Calculadora de Retenções</h1>
-  <p>Contas a Pagar — prévia de apuração</p>
+  <div>
+    <h1>Calculadora de Retenções</h1>
+    <p>Contas a Pagar — prévia de apuração</p>
+  </div>
+  <a href="receber.html">Ir para Contas a Receber</a>
 </div>
 
 <div class="modes" id="modes">
-  <button data-m="serv" class="on">Serviços<small>ISS · INSS · IRRF · PIS · COFINS · CSLL</small></button>
+  <button data-m="serv" class="on">Serviços · a pagar<small>documento de entrada</small></button>
   <button data-m="alug">Aluguel PJ → PJ<small>título integral ou rateio entre PFs</small></button>
   <button data-m="pjpf">Aluguel PJ → PF<small>tabela progressiva mensal</small></button>
 </div>
@@ -138,10 +145,19 @@ table.tb tr.sum td{border-bottom:0;border-top:1px solid var(--edge2);color:var(-
   <div class="grid">
     <div class="block">
       <h2>Dados do documento</h2>
+      <div class="fld"><label>Valor do serviço</label><input type="number" id="i-bruto" value="935.40" step="0.01" min="0"></div>
+      <h3 class="sub" style="margin-top:14px">Base de cálculo por tributo</h3>
       <div class="row2">
-        <div class="fld"><label>Valor do serviço</label><input type="number" id="i-bruto" value="935.40" step="0.01" min="0"></div>
-        <div class="fld"><label>Deduções (materiais + subempreitada)</label><input type="number" id="i-ded" value="714.24" step="0.01" min="0"></div>
+        <div class="fld"><label>Deduções da base do ISS<u>materiais e subempreitada</u></label><input type="number" id="i-dediss" value="714.24" step="0.01" min="0"></div>
+        <div class="fld"><label>Deduções da base do INSS<u>materiais e equipamentos</u></label><input type="number" id="i-dedinss" value="0" step="0.01" min="0"></div>
       </div>
+      <div class="fld"><label>Base do IRRF e do PCC</label>
+        <select id="i-basefed">
+          <option value="iss">Mesma base do ISS</option>
+          <option value="bruto">Valor total dos serviços</option>
+        </select>
+      </div>
+      <h3 class="sub">Tributos</h3>
       <div class="row2">
         <div class="fld"><label>Alíquota ISS %</label><input type="number" id="i-iss" value="2" step="0.01" min="0"></div>
         <div class="fld"><label>IRRF</label>
@@ -343,24 +359,26 @@ $('#modes').addEventListener('click',e=>{
 
 /* ================= SERVIÇOS ================= */
 const PRESETS=[
- {bruto:935.40,ded:714.24,iss:2,irrf:'0',issret:false,inss:false,pcc:true,reg:'caixa'},
- {bruto:905.59,ded:0,iss:5,irrf:'1.5',issret:false,inss:false,pcc:true,reg:'comp'},
- {bruto:881.80,ded:0,iss:2,irrf:'0',issret:true,inss:false,pcc:false,reg:'caixa'}
+ {bruto:935.40,dedIss:714.24,dedInss:0,fed:'iss',iss:2,irrf:'0',issret:false,inss:false,pcc:true,reg:'caixa'},
+ {bruto:905.59,dedIss:0,dedInss:0,fed:'iss',iss:5,irrf:'1.5',issret:false,inss:false,pcc:true,reg:'comp'},
+ {bruto:881.80,dedIss:0,dedInss:0,fed:'iss',iss:2,irrf:'0',issret:true,inss:false,pcc:false,reg:'caixa'}
 ];
 
 function calcServ(){
-  const bruto=num('#i-bruto'), ded=num('#i-ded');
-  const base=Math.max(0,r2(bruto-ded));
+  const bruto=num('#i-bruto'), dedIss=num('#i-dediss'), dedInss=num('#i-dedinss');
+  const baseIss=Math.max(0,r2(bruto-dedIss));
+  const baseInss=Math.max(0,r2(bruto-dedInss));
+  const baseFed=$('#i-basefed').value==='iss'?baseIss:bruto;
   const aIss=num('#i-iss'), aIrrf=num('#i-irrf');
   const issRet=$('#i-issret').checked, inssOn=$('#i-inss').checked, pccOn=$('#i-pcc').checked;
   const caixa=$('#i-regime').value==='caixa';
   const acBase=num('#i-acbase'), acIrrf=num('#i-acirrf'), minIrrf=num('#i-minirrf');
 
-  const iss=r2(base*aIss/100), inss=inssOn?r2(base*0.11):0;
-  const pis=pccOn?r2(base*0.0065):0, cof=pccOn?r2(base*0.03):0, csll=pccOn?r2(base*0.01):0;
+  const iss=r2(baseIss*aIss/100), inss=inssOn?r2(baseInss*0.11):0;
+  const pis=pccOn?r2(baseFed*0.0065):0, cof=pccOn?r2(baseFed*0.03):0, csll=pccOn?r2(baseFed*0.01):0;
   const pcc=r2(pis+cof+csll);
 
-  const irrfAcum=aIrrf?r2((base+acBase)*aIrrf/100):0;
+  const irrfAcum=aIrrf?r2((baseFed+acBase)*aIrrf/100):0;
   let irrf=r2(irrfAcum-acIrrf); if(irrf<0)irrf=0;
   const dispensado=aIrrf>0 && irrfAcum<=minIrrf;
   if(dispensado) irrf=0;
@@ -378,15 +396,20 @@ function calcServ(){
   $('#k-retido-e').textContent=retidoTotal>0?'soma dos tributos retidos':'nenhuma retenção';
 
   let h=L('Valor do serviço',rs(bruto))
-   +(ded>0?L('(−) Deduções',rs(ded),'muted'):'')
-   +L('Base de cálculo',rs(base))
+   +L('Bases de cálculo','','head')
+   +L('Base do ISS',rs(baseIss),dedIss>0?'':'muted')
+   +(dedIss>0?L('deduções aplicadas',rs(dedIss),'muted'):'')
+   +(inssOn?L('Base do INSS',rs(baseInss),dedInss>0?'':'muted'):'')
+   +(inssOn&&dedInss>0?L('deduções aplicadas',rs(dedInss),'muted'):'')
+   +L('Base do IRRF e do PCC',rs(baseFed),'muted')
+   +L('Tributos','','head')
    +(aIss>0?L('ISS '+br(aIss)+'% '+(issRet?'(retido)':'(calculado)'),rs(iss),issRet?'':'muted'):'')
    +(inssOn?L('INSS 11,00%',rs(inss)):'')
    +(pccOn?L('PIS 0,65%',rs(pis))+L('COFINS 3,00%',rs(cof))+L('CSLL 1,00%',rs(csll)):'');
 
   if(aIrrf>0){
     h+=L('Cumulatividade do IRRF','','head')
-     +(acBase>0?L('Base acumulada do dia',rs(r2(base+acBase)),'muted'):'')
+     +(acBase>0?L('Base acumulada do dia',rs(r2(baseFed+acBase)),'muted'):'')
      +L('IRRF '+br(aIrrf)+'% sobre o acumulado',rs(irrfAcum),'muted')
      +(acIrrf>0?L('(−) já retido hoje',rs(acIrrf),'muted'):'')
      +L('IRRF a reter neste documento',rs(irrf),'total');
@@ -410,7 +433,8 @@ $('#p-serv').addEventListener('input',e=>{
 $('#presets').addEventListener('click',e=>{
   const b=e.target.closest('button'); if(!b)return;
   const p=PRESETS[+b.dataset.p];
-  $('#i-bruto').value=p.bruto; $('#i-ded').value=p.ded; $('#i-iss').value=p.iss;
+  $('#i-bruto').value=p.bruto; $('#i-dediss').value=p.dedIss; $('#i-dedinss').value=p.dedInss;
+  $('#i-basefed').value=p.fed; $('#i-iss').value=p.iss;
   $('#i-irrf').value=p.irrf; $('#i-issret').checked=p.issret; $('#i-inss').checked=p.inss;
   $('#i-pcc').checked=p.pcc; $('#i-regime').value=p.reg;
   $('#i-acbase').value=0; $('#i-acirrf').value=0;
