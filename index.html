@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculadora de retenções — FISA170 / Contas a Pagar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E6E9ED;--card:#FBFBFA;--well:#EDF0F3;--ink:#111A22;--ink2:#44535F;--ink3:#6E7C88;
+  --rule:#C9D1D8;--claret:#A31B33;--teal:#0B6660;--indigo:#2E3E8F;
+  --sans:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --cond:"IBM Plex Sans Condensed","IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:14.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:940px;margin:0 auto;padding:16px}
+
+header.top{border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:14px}
+header.top .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--claret)}
+header.top h1{font-family:var(--cond);font-weight:700;font-size:24px;letter-spacing:-.01em;margin:4px 0 0}
+header.top p{margin:5px 0 0;color:var(--ink2);font-size:13.5px;max-width:74ch}
+
+.presets{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:14px}
+.presets b{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:400;margin-right:2px}
+.presets button{font-family:var(--cond);font-weight:600;font-size:12.5px;padding:5px 10px;background:var(--card);
+  border:1px solid var(--rule);cursor:pointer;color:var(--ink2)}
+.presets button:hover{border-color:var(--ink2);color:var(--ink)}
+.presets button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.calc{border:1px solid var(--rule);background:var(--card)}
+.grid{display:grid;grid-template-columns:1.15fr 1fr}
+.in{padding:16px 18px;border-right:1px solid var(--rule)}
+.out{padding:16px 18px;background:var(--well)}
+h2{font-family:var(--cond);font-size:13.5px;letter-spacing:.03em;margin:0 0 12px;text-transform:uppercase;color:var(--ink2)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fld{margin-bottom:10px}
+.fld label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);margin-bottom:3px}
+.fld input,.fld select{width:100%;font-family:var(--mono);font-size:13.5px;padding:6px 8px;border:1px solid var(--rule);background:#fff;color:var(--ink)}
+.fld input:focus,.fld select:focus,.presets button:focus-visible{outline:2px solid var(--claret);outline-offset:-1px}
+.chk{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:7px;cursor:pointer;color:var(--ink2)}
+.chk input{width:15px;height:15px;accent-color:var(--claret);flex:none}
+.line{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:12.5px;padding:4px 0;border-bottom:1px dotted var(--rule)}
+.line span:first-child{color:var(--ink2)}
+.line.muted,.line.muted span:first-child{color:var(--ink3)}
+.line.big{font-size:14.5px;font-weight:600;border-bottom:0;border-top:1px solid var(--ink);margin-top:5px;padding-top:8px}
+
+.tl{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--rule)}
+.tl-col{padding:12px 16px 14px}
+.tl-col:first-child{border-right:1px solid var(--rule)}
+.tl-h{font-family:var(--cond);font-weight:700;font-size:13.5px;line-height:1.2}
+.tl-h u{display:block;text-decoration:none;font-family:var(--mono);font-size:10px;font-weight:400;color:var(--ink3);margin-top:2px}
+.tl-col:first-child .tl-h{color:var(--indigo)}
+.tl-col:last-child .tl-h{color:var(--teal)}
+.pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px;min-height:26px}
+.pill{font-family:var(--mono);font-size:11px;padding:3px 7px;border:1px solid var(--rule);background:#fff}
+.pill b{font-weight:600}
+.pill.none{border-style:dashed;color:var(--ink3);background:transparent}
+.note{margin-top:12px;font-size:12.5px;color:var(--ink3);font-family:var(--mono);line-height:1.6}
+
+@media(max-width:760px){
+  .grid,.tl{grid-template-columns:1fr}
+  .in{border-right:0;border-bottom:1px solid var(--rule)}
+  .tl-col:first-child{border-right:0;border-bottom:1px solid var(--rule)}
+  .wrap{padding:12px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="eyebrow">FISA170 · Contas a Pagar</div>
+  <h1>Calculadora de retenções</h1>
+  <p>Simula a apuração de um documento de entrada de serviço e indica em que momento cada título de tributo é gerado — na inclusão do documento ou na baixa.</p>
+</header>
+
+<div class="presets" id="presets">
+  <b>Cenários homologados</b>
+  <button data-p="0">1 · PCC caixa</button>
+  <button data-p="1">3 · PCC competência</button>
+  <button data-p="2">4 · Regimes mistos</button>
+  <button data-p="3">5 · Simples, ISS retido</button>
+  <button data-p="4">6 · Cessão de mão de obra</button>
+</div>
+
+<div class="calc">
+  <div class="grid">
+    <div class="in">
+      <h2>Dados do documento</h2>
+      <div class="row2">
+        <div class="fld"><label>Valor do serviço</label><input type="number" id="i-bruto" value="935.40" step="0.01" min="0"></div>
+        <div class="fld"><label>Deduções (materiais + subempreitada)</label><input type="number" id="i-ded" value="714.24" step="0.01" min="0"></div>
+      </div>
+      <div class="row2">
+        <div class="fld"><label>Alíquota ISS %</label><input type="number" id="i-iss" value="2" step="0.01" min="0"></div>
+        <div class="fld"><label>IRRF</label>
+          <select id="i-irrf">
+            <option value="0">Não retém</option>
+            <option value="1">1,00% — limpeza, conservação, segurança, mão de obra</option>
+            <option value="1.2">1,20% — demais casos da regra</option>
+            <option value="1.5">1,50% — serviços profissionais</option>
+          </select>
+        </div>
+      </div>
+      <label class="chk"><input type="checkbox" id="i-issret"> ISS retido pelo tomador</label>
+      <label class="chk"><input type="checkbox" id="i-inss"> INSS 11% — cessão de mão de obra</label>
+      <label class="chk"><input type="checkbox" id="i-pcc" checked> Retém PIS / COFINS / CSLL (0,65 + 3,00 + 1,00)</label>
+      <div class="fld" style="margin:10px 0 0">
+        <label>Fato gerador do PCC</label>
+        <select id="i-regime">
+          <option value="caixa">Caixa — retém na baixa</option>
+          <option value="comp">Competência — retém na inclusão</option>
+        </select>
+      </div>
+    </div>
+    <div class="out">
+      <h2>Apuração</h2>
+      <div id="out"></div>
+    </div>
+  </div>
+  <div class="tl">
+    <div class="tl-col">
+      <div class="tl-h">Nasce na inclusão do documento<u>MATA103 → FINA050</u></div>
+      <div class="pills" id="tl-inc"></div>
+    </div>
+    <div class="tl-col">
+      <div class="tl-h">Nasce na baixa do título<u>FINA080 → retenções</u></div>
+      <div class="pills" id="tl-bx"></div>
+    </div>
+  </div>
+</div>
+
+<p class="note">Arredondamento de duas casas, equivalente a Vlr. Decimal = 1 - Arredonda. Ferramenta de apoio à conferência — a apuração oficial é a do Configurador de Tributos, sujeita às regras de base, alíquota, cumulatividade e vigência cadastradas.</p>
+
+</div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const r2=x=>Math.round(x*100+1e-6)/100;
+const br=x=>x.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+const PRESETS=[
+ {bruto:935.40,ded:714.24,iss:2,irrf:'0',issret:false,inss:false,pcc:true,reg:'caixa'},
+ {bruto:905.59,ded:0,iss:5,irrf:'1.5',issret:false,inss:false,pcc:true,reg:'comp'},
+ {bruto:2611.01,ded:0,iss:2,irrf:'1.5',issret:false,inss:false,pcc:true,reg:'caixa'},
+ {bruto:881.80,ded:0,iss:2,irrf:'0',issret:true,inss:false,pcc:false,reg:'caixa'},
+ {bruto:12000,ded:0,iss:5,irrf:'1',issret:false,inss:true,pcc:true,reg:'comp'}
+];
+
+function calc(){
+  const bruto=+$('#i-bruto').value||0, ded=+$('#i-ded').value||0;
+  const base=Math.max(0,r2(bruto-ded));
+  const aIss=+$('#i-iss').value||0, aIrrf=+$('#i-irrf').value||0;
+  const issRet=$('#i-issret').checked, inssOn=$('#i-inss').checked, pccOn=$('#i-pcc').checked;
+  const caixa=$('#i-regime').value==='caixa';
+
+  const iss=r2(base*aIss/100), irrf=r2(base*aIrrf/100), inss=inssOn?r2(base*0.11):0;
+  const pis=pccOn?r2(base*0.0065):0, cof=pccOn?r2(base*0.03):0, csll=pccOn?r2(base*0.01):0;
+  const pcc=r2(pis+cof+csll);
+  const naInclusao=r2((issRet?iss:0)+irrf+inss+(pccOn&&!caixa?pcc:0));
+  const titulo=r2(bruto-naInclusao);
+  const pago=r2(titulo-(pccOn&&caixa?pcc:0));
+
+  const L=(a,b,c='')=>`<div class="line ${c}"><span>${a}</span><span>${b}</span></div>`;
+  $('#out').innerHTML=
+    L('Valor do serviço','R$ '+br(bruto))+
+    (ded>0?L('(−) Deduções','R$ '+br(ded),'muted'):'')+
+    L('Base de cálculo','R$ '+br(base))+
+    (aIss>0?L(`ISS ${br(aIss)}% ${issRet?'(retido)':'(calculado)'}`,'R$ '+br(iss),issRet?'':'muted'):'')+
+    (aIrrf>0?L(`IRRF ${br(aIrrf)}%`,'R$ '+br(irrf)):'')+
+    (inssOn?L('INSS 11,00%','R$ '+br(inss)):'')+
+    (pccOn?L('PIS 0,65%','R$ '+br(pis))+L('COFINS 3,00%','R$ '+br(cof))+L('CSLL 1,00%','R$ '+br(csll)):'')+
+    L('Título principal no CAP','R$ '+br(titulo),'big')+
+    L('Valor pago na baixa','R$ '+br(pago),'big');
+
+  const inc=[], bx=[];
+  if(issRet) inc.push(['ISS',iss,'ISS']); else if(iss>0) inc.push(['ISS calculado — sem título',iss,null]);
+  if(aIrrf>0) inc.push(['IRRF',irrf,'TX']);
+  if(inssOn) inc.push(['INSS',inss,'INS']);
+  if(pccOn) [['PIS',pis],['COFINS',cof],['CSLL',csll]].forEach(([n,v])=>(caixa?bx:inc).push([n,v,'TX']));
+  const P=a=>a.length?a.map(([n,v,tp])=>tp
+      ?`<span class="pill"><b>${tp}</b> ${n} · ${br(v)}</span>`
+      :`<span class="pill none">${n} · ${br(v)}</span>`).join('')
+    :'<span class="pill none">nenhum título gerado</span>';
+  $('#tl-inc').innerHTML=P(inc); $('#tl-bx').innerHTML=P(bx);
+}
+
+$$('input,select').forEach(el=>el.addEventListener('input',()=>{
+  $$('#presets button').forEach(b=>b.classList.remove('on')); calc();
+}));
+
+$('#presets').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b)return;
+  const p=PRESETS[+b.dataset.p];
+  $('#i-bruto').value=p.bruto; $('#i-ded').value=p.ded; $('#i-iss').value=p.iss;
+  $('#i-irrf').value=p.irrf; $('#i-issret').checked=p.issret; $('#i-inss').checked=p.inss;
+  $('#i-pcc').checked=p.pcc; $('#i-regime').value=p.reg;
+  calc();
+  $$('#presets button').forEach(x=>x.classList.toggle('on',x===b));
+});
+
+calc();
+</script>
+</body>
+</html>
