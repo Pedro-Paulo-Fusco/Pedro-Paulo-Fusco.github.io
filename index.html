@@ -3,94 +3,140 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Calculadora de retenções — FISA170 / Contas a Pagar</title>
+<title>Calculadora de Retenções — Contas a Pagar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --paper:#E6E9ED;--card:#FBFBFA;--well:#EDF0F3;--ink:#111A22;--ink2:#44535F;--ink3:#6E7C88;
-  --rule:#C9D1D8;--claret:#A31B33;--teal:#0B6660;--indigo:#2E3E8F;
+  --bg:#1B1B1B;--panel:#151515;--card:#0B0B0B;--edge:#2E2E2E;--edge2:#3A3A3A;
+  --blue:#1F4FD6;--navy:#1C3C8C;--gold:#F2B705;--orange:#F0921E;
+  --txt:#EAEAEA;--muted:#969AA1;
   --sans:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
   --cond:"IBM Plex Sans Condensed","IBM Plex Sans","Segoe UI",system-ui,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
 }
 *{box-sizing:border-box}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:14.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
-.wrap{max-width:940px;margin:0 auto;padding:16px}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:22px}
 
-header.top{border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:14px}
-header.top .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--claret)}
-header.top h1{font-family:var(--cond);font-weight:700;font-size:24px;letter-spacing:-.01em;margin:4px 0 0}
-header.top p{margin:5px 0 0;color:var(--ink2);font-size:13.5px;max-width:74ch}
+.top{margin-bottom:20px}
+.top h1{font-family:var(--cond);font-weight:700;font-size:32px;letter-spacing:.01em;color:var(--gold);margin:0;line-height:1.05}
+.top p{margin:4px 0 0;color:var(--gold);opacity:.72;font-family:var(--cond);font-weight:600;font-size:16px}
 
-.presets{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:14px}
-.presets b{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:400;margin-right:2px}
-.presets button{font-family:var(--cond);font-weight:600;font-size:12.5px;padding:5px 10px;background:var(--card);
-  border:1px solid var(--rule);cursor:pointer;color:var(--ink2)}
-.presets button:hover{border-color:var(--ink2);color:var(--ink)}
-.presets button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.modes button{position:relative;font-family:var(--cond);font-weight:600;font-size:15px;padding:15px 16px 13px;
+  background:var(--card);border:1px solid var(--edge);border-radius:6px;cursor:pointer;color:var(--muted);
+  text-align:left;line-height:1.2;transition:.15s}
+.modes button::before{content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:5px;border-radius:6px 6px 0 0;background:var(--edge2)}
+.modes button:hover{color:var(--txt)}
+.modes button.on{color:var(--gold);border-color:#3B3B3B}
+.modes button.on::before{background:var(--blue)}
+.modes button small{display:block;font-family:var(--mono);font-size:10.5px;font-weight:400;color:#6E747B;margin-top:4px;letter-spacing:.03em}
+.panel{display:none}.panel.on{display:block}
 
-.calc{border:1px solid var(--rule);background:var(--card)}
-.grid{display:grid;grid-template-columns:1.15fr 1fr}
-.in{padding:16px 18px;border-right:1px solid var(--rule)}
-.out{padding:16px 18px;background:var(--well)}
-h2{font-family:var(--cond);font-size:13.5px;letter-spacing:.03em;margin:0 0 12px;text-transform:uppercase;color:var(--ink2)}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.fld{margin-bottom:10px}
-.fld label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);margin-bottom:3px}
-.fld input,.fld select{width:100%;font-family:var(--mono);font-size:13.5px;padding:6px 8px;border:1px solid var(--rule);background:#fff;color:var(--ink)}
-.fld input:focus,.fld select:focus,.presets button:focus-visible{outline:2px solid var(--claret);outline-offset:-1px}
-.chk{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:7px;cursor:pointer;color:var(--ink2)}
-.chk input{width:15px;height:15px;accent-color:var(--claret);flex:none}
-.line{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:12.5px;padding:4px 0;border-bottom:1px dotted var(--rule)}
-.line span:first-child{color:var(--ink2)}
-.line.muted,.line.muted span:first-child{color:var(--ink3)}
-.line.big{font-size:14.5px;font-weight:600;border-bottom:0;border-top:1px solid var(--ink);margin-top:5px;padding-top:8px}
+.block{background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:18px 20px 20px;margin-bottom:16px}
+.block>h2{font-family:var(--cond);font-weight:600;font-size:16px;color:var(--gold);margin:0 0 14px;letter-spacing:.01em}
+.plain{background:none;border:0;border-top:1px solid var(--edge);border-radius:0;padding:14px 0 0;margin-bottom:0}
 
-.tl{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--rule)}
-.tl-col{padding:12px 16px 14px}
-.tl-col:first-child{border-right:1px solid var(--rule)}
-.tl-h{font-family:var(--cond);font-weight:700;font-size:13.5px;line-height:1.2}
-.tl-h u{display:block;text-decoration:none;font-family:var(--mono);font-size:10px;font-weight:400;color:var(--ink3);margin-top:2px}
-.tl-col:first-child .tl-h{color:var(--indigo)}
-.tl-col:last-child .tl-h{color:var(--teal)}
-.pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px;min-height:26px}
-.pill{font-family:var(--mono);font-size:11px;padding:3px 7px;border:1px solid var(--rule);background:#fff}
-.pill b{font-weight:600}
-.pill.none{border-style:dashed;color:var(--ink3);background:transparent}
-.note{margin-top:12px;font-size:12.5px;color:var(--ink3);font-family:var(--mono);line-height:1.6}
+.kpis{display:grid;gap:12px;margin-bottom:16px}
+.kpis.k3{grid-template-columns:repeat(3,1fr)}
+.kpi{position:relative;background:var(--card);border:1px solid var(--edge);border-radius:6px;padding:16px 18px 15px}
+.kpi::before{content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:5px;border-radius:6px 6px 0 0;background:var(--blue)}
+.kpi.alt::before{background:var(--gold)}
+.kpi span{display:block;font-family:var(--cond);font-weight:600;font-size:13px;color:var(--gold);opacity:.85;letter-spacing:.02em}
+.kpi strong{display:block;font-family:var(--cond);font-weight:700;font-size:29px;color:var(--orange);line-height:1.15;margin-top:5px;letter-spacing:-.01em}
+.kpi em{display:block;font-style:normal;font-family:var(--mono);font-size:10.5px;color:#6E747B;margin-top:4px}
 
-@media(max-width:760px){
-  .grid,.tl{grid-template-columns:1fr}
-  .in{border-right:0;border-bottom:1px solid var(--rule)}
-  .tl-col:first-child{border-right:0;border-bottom:1px solid var(--rule)}
-  .wrap{padding:12px}
+.grid{display:grid;grid-template-columns:1.05fr 1fr;gap:16px;align-items:start}
+h3.sub{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#7B8189;
+  margin:20px 0 10px;padding-bottom:7px;border-bottom:1px solid var(--edge);font-weight:400}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fld{margin-bottom:12px}
+.fld label{display:block;font-family:var(--cond);font-weight:600;font-size:12.5px;color:var(--gold);opacity:.8;margin-bottom:5px}
+.fld input,.fld select{width:100%;font-family:var(--mono);font-size:14.5px;padding:9px 11px;border:1px solid var(--edge2);
+  border-radius:4px;background:#080808;color:var(--txt)}
+.fld input:focus,.fld select:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 2px rgba(242,183,5,.18)}
+.fld select{cursor:pointer}
+.chk{display:flex;align-items:center;gap:10px;font-size:14px;margin-bottom:10px;cursor:pointer;color:var(--txt);
+  background:#0B0B0B;border:1px solid var(--edge);border-radius:4px;padding:9px 11px}
+.chk:hover{border-color:var(--edge2)}
+.chk input{width:16px;height:16px;accent-color:var(--gold);flex:none}
+button:focus-visible,.chk:focus-within{outline:2px solid var(--gold);outline-offset:2px}
+
+.detail{background:var(--card);border:1px solid var(--edge);border-radius:6px;padding:16px 18px}
+.detail h4{font-family:var(--cond);font-weight:600;font-size:13.5px;color:var(--gold);opacity:.85;margin:0 0 10px}
+.line{display:flex;justify-content:space-between;gap:14px;font-family:var(--mono);font-size:13px;padding:7px 0;border-bottom:1px solid #1E1E1E}
+.line span:first-child{color:#B6BBC1}
+.line span:last-child{color:var(--txt);white-space:nowrap}
+.line.muted span{color:#787E85}
+.line.head{border-bottom:1px solid var(--navy);font-family:var(--cond);font-weight:600;font-size:12px;
+  letter-spacing:.06em;text-transform:uppercase;margin-top:16px;padding-bottom:5px}
+.line.head span{color:var(--gold);opacity:.8}
+.line.total{border-bottom:0;border-top:1px solid var(--edge2);margin-top:8px;padding-top:11px;font-size:14.5px}
+.line.total span:last-child{color:var(--orange);font-weight:600}
+.flag{font-family:var(--sans);font-size:13px;line-height:1.55;padding:11px 13px;margin-top:14px;border-radius:4px;
+  border-left:3px solid var(--gold);background:rgba(242,183,5,.07);color:#DCC48A}
+.flag.ok{border-left-color:var(--blue);background:rgba(31,79,214,.1);color:#A9BEEE}
+
+.pf-head,.pf-row{display:grid;grid-template-columns:64px 1fr 92px;gap:10px;align-items:center}
+.pf-head{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#7B8189;margin-bottom:7px}
+.pf-row{margin-bottom:8px}
+.pf-row .tagpf{font-family:var(--cond);font-weight:600;font-size:13px;color:var(--gold);opacity:.85}
+.pf-row input{width:100%;font-family:var(--mono);font-size:14px;padding:8px 10px;border:1px solid var(--edge2);
+  border-radius:4px;background:#080808;color:var(--txt)}
+.pf-row input:focus{outline:0;border-color:var(--gold)}
+.split{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.split button{font-family:var(--cond);font-weight:600;font-size:12.5px;padding:8px 14px;background:#0B0B0B;
+  border:1px solid var(--edge2);border-radius:4px;color:var(--muted);cursor:pointer}
+.split button:hover{color:var(--gold);border-color:var(--gold)}
+.split button.on{color:var(--gold);border-color:var(--gold);background:rgba(242,183,5,.08)}
+
+table.tb{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px}
+table.tb th{text-align:right;font-family:var(--cond);font-weight:600;font-size:11.5px;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--gold);opacity:.8;padding:0 0 7px 10px;border-bottom:1px solid var(--navy)}
+table.tb th:first-child{text-align:left;padding-left:0}
+table.tb td{text-align:right;padding:8px 0 8px 10px;border-bottom:1px solid #1E1E1E;color:var(--txt)}
+table.tb td:first-child{text-align:left;padding-left:0;color:var(--gold);opacity:.85;font-family:var(--cond);font-weight:600;font-size:13px}
+table.tb tr.sum td{border-bottom:0;border-top:1px solid var(--edge2);color:var(--orange);font-weight:600;padding-top:10px}
+
+.refs{font-family:var(--mono);font-size:11.5px;color:#71767D;line-height:1.7;margin:0}
+.refs b{color:var(--muted);font-weight:500}
+
+@media(max-width:820px){
+  .grid,.kpis.k3,.modes{grid-template-columns:1fr}
+  .wrap{padding:14px}
+  .top h1{font-size:26px}
+  .kpi strong{font-size:26px}
+  table.tb{font-size:11.5px}
 }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<header class="top">
-  <div class="eyebrow">FISA170 · Contas a Pagar</div>
-  <h1>Calculadora de retenções</h1>
-  <p>Simula a apuração de um documento de entrada de serviço e indica em que momento cada título de tributo é gerado — na inclusão do documento ou na baixa.</p>
-</header>
-
-<div class="presets" id="presets">
-  <b>Cenários homologados</b>
-  <button data-p="0">1 · PCC caixa</button>
-  <button data-p="1">3 · PCC competência</button>
-  <button data-p="2">4 · Regimes mistos</button>
-  <button data-p="3">5 · Simples, ISS retido</button>
-  <button data-p="4">6 · Cessão de mão de obra</button>
+<div class="top">
+  <h1>Calculadora de Retenções</h1>
+  <p>Contas a Pagar — prévia de apuração</p>
 </div>
 
-<div class="calc">
+<div class="modes" id="modes">
+  <button data-m="serv" class="on">Serviços<small>ISS · INSS · IRRF · PIS · COFINS · CSLL</small></button>
+  <button data-m="alug">Aluguel PJ → PJ<small>título integral ou rateio entre PFs</small></button>
+  <button data-m="pjpf">Aluguel PJ → PF<small>tabela progressiva mensal</small></button>
+</div>
+
+<!-- ============ SERVIÇOS ============ -->
+<div class="panel on" id="p-serv">
+  <div class="kpis k3">
+    <div class="kpi"><span>Título principal no CAP</span><strong id="k-titulo">—</strong><em id="k-titulo-e">—</em></div>
+    <div class="kpi"><span>Valor pago na baixa</span><strong id="k-pago">—</strong><em id="k-pago-e">—</em></div>
+    <div class="kpi alt"><span>Total retido</span><strong id="k-retido">—</strong><em id="k-retido-e">—</em></div>
+  </div>
+
   <div class="grid">
-    <div class="in">
+    <div class="block">
       <h2>Dados do documento</h2>
       <div class="row2">
         <div class="fld"><label>Valor do serviço</label><input type="number" id="i-bruto" value="935.40" step="0.01" min="0"></div>
@@ -101,41 +147,154 @@ h2{font-family:var(--cond);font-size:13.5px;letter-spacing:.03em;margin:0 0 12px
         <div class="fld"><label>IRRF</label>
           <select id="i-irrf">
             <option value="0">Não retém</option>
-            <option value="1">1,00% — limpeza, conservação, segurança, mão de obra</option>
-            <option value="1.2">1,20% — demais casos da regra</option>
+            <option value="1">1,00% — limpeza, segurança, mão de obra</option>
+            <option value="1.2">1,20% — demais casos</option>
             <option value="1.5">1,50% — serviços profissionais</option>
           </select>
         </div>
       </div>
       <label class="chk"><input type="checkbox" id="i-issret"> ISS retido pelo tomador</label>
       <label class="chk"><input type="checkbox" id="i-inss"> INSS 11% — cessão de mão de obra</label>
-      <label class="chk"><input type="checkbox" id="i-pcc" checked> Retém PIS / COFINS / CSLL (0,65 + 3,00 + 1,00)</label>
-      <div class="fld" style="margin:10px 0 0">
+      <label class="chk"><input type="checkbox" id="i-pcc" checked> Retém PIS / COFINS / CSLL</label>
+      <div class="fld" style="margin-top:12px">
         <label>Fato gerador do PCC</label>
         <select id="i-regime">
           <option value="caixa">Caixa — retém na baixa</option>
           <option value="comp">Competência — retém na inclusão</option>
         </select>
       </div>
+      <h3 class="sub">Cumulatividade do dia — mesmo fornecedor</h3>
+      <div class="row2">
+        <div class="fld"><label>Base já paga hoje</label><input type="number" id="i-acbase" value="0" step="0.01" min="0"></div>
+        <div class="fld"><label>IRRF já retido hoje</label><input type="number" id="i-acirrf" value="0" step="0.01" min="0"></div>
+      </div>
+      <div class="fld"><label>Mínimo de retenção do IRRF</label><input type="number" id="i-minirrf" value="10.00" step="0.01" min="0"></div>
+      <h3 class="sub">Cenários homologados</h3>
+      <div class="split" id="presets" style="margin-top:0">
+        <button type="button" data-p="0">PCC na baixa</button>
+        <button type="button" data-p="1">PCC por competência</button>
+        <button type="button" data-p="2">Simples · ISS retido</button>
+      </div>
     </div>
-    <div class="out">
+
+    <div class="block">
       <h2>Apuração</h2>
-      <div id="out"></div>
+      <div class="detail" id="out-serv"></div>
+      <div class="detail" style="margin-top:14px">
+        <h4>Momento de geração dos títulos</h4>
+        <div class="line head"><span>Na inclusão do documento</span><span>MATA103</span></div>
+        <div id="tl-inc"></div>
+        <div class="line head"><span>Na baixa do título</span><span>FINA080</span></div>
+        <div id="tl-bx"></div>
+      </div>
     </div>
   </div>
-  <div class="tl">
-    <div class="tl-col">
-      <div class="tl-h">Nasce na inclusão do documento<u>MATA103 → FINA050</u></div>
-      <div class="pills" id="tl-inc"></div>
-    </div>
-    <div class="tl-col">
-      <div class="tl-h">Nasce na baixa do título<u>FINA080 → retenções</u></div>
-      <div class="pills" id="tl-bx"></div>
-    </div>
+  <div class="block plain">
+    <p class="refs"><b>Base:</b> Lei 10.833/2003 art. 30 · Decreto 9.580/2018 arts. 714 e 715 · Lei 9.430/1996 art. 67 (dispensa do IRRF até R$ 10,00) · LC 116/2003.</p>
   </div>
 </div>
 
-<p class="note">Arredondamento de duas casas, equivalente a Vlr. Decimal = 1 - Arredonda. Ferramenta de apoio à conferência — a apuração oficial é a do Configurador de Tributos, sujeita às regras de base, alíquota, cumulatividade e vigência cadastradas.</p>
+<!-- ============ ALUGUEL PJ → PJ ============ -->
+<div class="panel" id="p-alug">
+  <div class="kpis k3">
+    <div class="kpi"><span>Valor do título</span><strong id="k-alug-tit">—</strong><em>pago ao locador PJ</em></div>
+    <div class="kpi alt"><span>IRRF total a reter</span><strong id="k-alug-irrf">—</strong><em id="k-alug-irrf-e">—</em></div>
+    <div class="kpi"><span>Líquido a repassar</span><strong id="k-alug-liq">—</strong><em>título menos retenções</em></div>
+  </div>
+
+  <div class="grid">
+    <div class="block">
+      <h2>Dados do aluguel</h2>
+      <div class="fld">
+        <label>Situação</label>
+        <select id="g-tipo">
+          <option value="pj">Locador PJ — titular do imóvel</option>
+          <option value="rep">PJ representando pessoas físicas</option>
+        </select>
+      </div>
+      <div class="row2">
+        <div class="fld"><label>Valor total do aluguel</label><input type="number" id="g-valor" value="12000.00" step="0.01" min="0"></div>
+        <div class="fld"><label>Deduções do imóvel (IPTU, condomínio)</label><input type="number" id="g-ded" value="0" step="0.01" min="0"></div>
+      </div>
+
+      <div id="g-repbox">
+        <h3 class="sub">Rateio entre os locadores pessoa física</h3>
+        <div class="row2">
+          <div class="fld"><label>Quantidade de pessoas físicas</label><input type="number" id="g-qtd" value="2" step="1" min="1" max="10"></div>
+          <div class="fld"><label>Critério de dedução</label>
+            <select id="g-modo">
+              <option value="melhor">O mais benéfico</option>
+              <option value="simpl">Desconto simplificado</option>
+              <option value="legais">Somente deduções legais</option>
+            </select>
+          </div>
+        </div>
+        <div class="pf-head"><span>Locador</span><span>Participação %</span><span>Dependentes</span></div>
+        <div id="g-rows"></div>
+        <div class="split"><button type="button" id="g-igual">Dividir em partes iguais</button></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Resultado</h2>
+      <div class="detail" id="out-alug"></div>
+    </div>
+  </div>
+  <div class="block plain">
+    <p class="refs"><b>Locador PJ:</b> não há retenção de IRRF — locação de imóvel entre pessoas jurídicas não integra o rol do art. 714 do Decreto 9.580/2018. O título entra pelo valor integral.<br>
+    <b>PJ representante:</b> a retenção é apurada individualmente por pessoa física beneficiária, sobre a parcela que couber a cada uma. O título no CAP é único, no nome do representante — a segregação por beneficiário precisa ser controlada fora do Contas a Pagar para a EFD-Reinf e os informes de rendimentos.</p>
+  </div>
+</div>
+
+<!-- ============ ALUGUEL PJ → PF ============ -->
+<div class="panel" id="p-pjpf">
+  <div class="kpis k3">
+    <div class="kpi alt"><span>IRRF a reter agora</span><strong id="k-pf-irrf">—</strong><em id="k-pf-irrf-e">—</em></div>
+    <div class="kpi"><span>Líquido ao locador</span><strong id="k-pf-liq">—</strong><em>aluguel menos IRRF</em></div>
+    <div class="kpi"><span>Imposto do mês</span><strong id="k-pf-mes">—</strong><em>após a redução legal</em></div>
+  </div>
+
+  <div class="grid">
+    <div class="block">
+      <h2>Dados do pagamento</h2>
+      <div class="fld"><label>Valor do aluguel deste pagamento</label><input type="number" id="a-valor" value="6000.00" step="0.01" min="0"></div>
+      <h3 class="sub">Deduções do rendimento — ônus do locador</h3>
+      <div class="row2">
+        <div class="fld"><label>IPTU e taxas</label><input type="number" id="a-iptu" value="0" step="0.01" min="0"></div>
+        <div class="fld"><label>Condomínio</label><input type="number" id="a-cond" value="0" step="0.01" min="0"></div>
+      </div>
+      <div class="fld"><label>Taxa de administração</label><input type="number" id="a-adm" value="0" step="0.01" min="0"></div>
+      <h3 class="sub">Deduções da base de cálculo</h3>
+      <div class="row2">
+        <div class="fld"><label>Dependentes</label><input type="number" id="a-dep" value="0" step="1" min="0"></div>
+        <div class="fld"><label>Pensão alimentícia</label><input type="number" id="a-pensao" value="0" step="0.01" min="0"></div>
+      </div>
+      <div class="fld"><label>Critério de dedução</label>
+        <select id="a-modo">
+          <option value="melhor">O mais benéfico ao contribuinte</option>
+          <option value="simpl">Desconto simplificado — R$ 607,20</option>
+          <option value="legais">Somente deduções legais</option>
+        </select>
+      </div>
+      <h3 class="sub">Acumulação do mês — mesmo locador</h3>
+      <div class="row2">
+        <div class="fld"><label>Rendimento já pago no mês</label><input type="number" id="a-acrend" value="0" step="0.01" min="0"></div>
+        <div class="fld"><label>IRRF já retido no mês</label><input type="number" id="a-acirrf" value="0" step="0.01" min="0"></div>
+      </div>
+      <div class="fld"><label>Outros rendimentos do mês (opcional)</label><input type="number" id="a-outros" value="0" step="0.01" min="0"></div>
+    </div>
+
+    <div class="block">
+      <h2>Apuração do IRRF</h2>
+      <div class="detail" id="out-pf"></div>
+    </div>
+  </div>
+  <div class="block plain">
+    <p class="refs"><b>Base:</b> Decreto 9.580/2018 arts. 41, 42, 677 e 678 · Lei 15.191/2025 (tabela mensal: faixas de R$ 2.428,80 a R$ 4.664,68, dependente R$ 189,59) · Lei 14.663/2023 art. 6º (desconto simplificado de R$ 607,20) · Lei 15.270/2025 (redução de até R$ 312,89 para renda mensal de até R$ 5.000 e parcial até R$ 7.350).</p>
+  </div>
+</div>
+
+<div class="block plain"><p class="refs">Ferramenta de prévia, com arredondamento de duas casas. A apuração oficial é a do Configurador de Tributos, sujeita às regras de base, alíquota, cumulatividade e vigência cadastradas.</p></div>
 
 </div>
 
@@ -143,68 +302,264 @@ h2{font-family:var(--cond);font-size:13.5px;letter-spacing:.03em;margin:0 0 12px
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const r2=x=>Math.round(x*100+1e-6)/100;
 const br=x=>x.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const rs=x=>'R$ '+br(x);
+const num=id=>+$(id).value||0;
+const L=(a,b,c='')=>`<div class="line ${c}"><span>${a}</span><span>${b}</span></div>`;
 
+const TABELA=[
+ {ate:2428.80, al:0,    ded:0},
+ {ate:2826.65, al:7.5,  ded:182.16},
+ {ate:3751.05, al:15,   ded:394.16},
+ {ate:4664.68, al:22.5, ded:675.49},
+ {ate:Infinity,al:27.5, ded:908.73}
+];
+const DEP=189.59, SIMPL=607.20;
+const faixa=b=>TABELA.find(f=>b<=f.ate);
+const redutor=r=> r<=5000?312.89 : r<=7350?Math.max(0,r2(978.62-0.133145*r)) : 0;
+
+function irpf(rendimento,o){
+  o=o||{};
+  const deps=o.deps||0, pensao=o.pensao||0, modo=o.modo||'melhor';
+  const rendaRed=(o.rendaRedutor===undefined||o.rendaRedutor===null)?rendimento:o.rendaRedutor;
+  const legais=r2(deps*DEP+pensao);
+  let desconto,criterio;
+  if(modo==='simpl'){desconto=SIMPL;criterio='desconto simplificado';}
+  else if(modo==='legais'){desconto=legais;criterio='deduções legais';}
+  else if(legais>=SIMPL){desconto=legais;criterio='deduções legais (mais benéfico)';}
+  else {desconto=SIMPL;criterio='desconto simplificado (mais benéfico)';}
+  const base=Math.max(0,r2(rendimento-desconto));
+  const f=faixa(base);
+  const impBruto=Math.max(0,r2(base*f.al/100-f.ded));
+  const red=Math.min(impBruto, redutor(rendaRed));
+  const imposto=Math.max(0,r2(impBruto-red));
+  return {desconto,criterio,base,aliq:f.al,parcela:f.ded,impBruto,red,imposto};
+}
+
+$('#modes').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b)return;
+  $$('#modes button').forEach(x=>x.classList.toggle('on',x===b));
+  $$('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.m));
+});
+
+/* ================= SERVIÇOS ================= */
 const PRESETS=[
  {bruto:935.40,ded:714.24,iss:2,irrf:'0',issret:false,inss:false,pcc:true,reg:'caixa'},
  {bruto:905.59,ded:0,iss:5,irrf:'1.5',issret:false,inss:false,pcc:true,reg:'comp'},
- {bruto:2611.01,ded:0,iss:2,irrf:'1.5',issret:false,inss:false,pcc:true,reg:'caixa'},
- {bruto:881.80,ded:0,iss:2,irrf:'0',issret:true,inss:false,pcc:false,reg:'caixa'},
- {bruto:12000,ded:0,iss:5,irrf:'1',issret:false,inss:true,pcc:true,reg:'comp'}
+ {bruto:881.80,ded:0,iss:2,irrf:'0',issret:true,inss:false,pcc:false,reg:'caixa'}
 ];
 
-function calc(){
-  const bruto=+$('#i-bruto').value||0, ded=+$('#i-ded').value||0;
+function calcServ(){
+  const bruto=num('#i-bruto'), ded=num('#i-ded');
   const base=Math.max(0,r2(bruto-ded));
-  const aIss=+$('#i-iss').value||0, aIrrf=+$('#i-irrf').value||0;
+  const aIss=num('#i-iss'), aIrrf=num('#i-irrf');
   const issRet=$('#i-issret').checked, inssOn=$('#i-inss').checked, pccOn=$('#i-pcc').checked;
   const caixa=$('#i-regime').value==='caixa';
+  const acBase=num('#i-acbase'), acIrrf=num('#i-acirrf'), minIrrf=num('#i-minirrf');
 
-  const iss=r2(base*aIss/100), irrf=r2(base*aIrrf/100), inss=inssOn?r2(base*0.11):0;
+  const iss=r2(base*aIss/100), inss=inssOn?r2(base*0.11):0;
   const pis=pccOn?r2(base*0.0065):0, cof=pccOn?r2(base*0.03):0, csll=pccOn?r2(base*0.01):0;
   const pcc=r2(pis+cof+csll);
+
+  const irrfAcum=aIrrf?r2((base+acBase)*aIrrf/100):0;
+  let irrf=r2(irrfAcum-acIrrf); if(irrf<0)irrf=0;
+  const dispensado=aIrrf>0 && irrfAcum<=minIrrf;
+  if(dispensado) irrf=0;
+
   const naInclusao=r2((issRet?iss:0)+irrf+inss+(pccOn&&!caixa?pcc:0));
   const titulo=r2(bruto-naInclusao);
   const pago=r2(titulo-(pccOn&&caixa?pcc:0));
+  const retidoTotal=r2(bruto-pago);
 
-  const L=(a,b,c='')=>`<div class="line ${c}"><span>${a}</span><span>${b}</span></div>`;
-  $('#out').innerHTML=
-    L('Valor do serviço','R$ '+br(bruto))+
-    (ded>0?L('(−) Deduções','R$ '+br(ded),'muted'):'')+
-    L('Base de cálculo','R$ '+br(base))+
-    (aIss>0?L(`ISS ${br(aIss)}% ${issRet?'(retido)':'(calculado)'}`,'R$ '+br(iss),issRet?'':'muted'):'')+
-    (aIrrf>0?L(`IRRF ${br(aIrrf)}%`,'R$ '+br(irrf)):'')+
-    (inssOn?L('INSS 11,00%','R$ '+br(inss)):'')+
-    (pccOn?L('PIS 0,65%','R$ '+br(pis))+L('COFINS 3,00%','R$ '+br(cof))+L('CSLL 1,00%','R$ '+br(csll)):'')+
-    L('Título principal no CAP','R$ '+br(titulo),'big')+
-    L('Valor pago na baixa','R$ '+br(pago),'big');
+  $('#k-titulo').textContent=rs(titulo);
+  $('#k-titulo-e').textContent=naInclusao>0?'já líquido de '+rs(naInclusao):'valor integral da nota';
+  $('#k-pago').textContent=rs(pago);
+  $('#k-pago-e').textContent=(pccOn&&caixa)?'retenção de '+rs(pcc)+' na baixa':'sem retenção na baixa';
+  $('#k-retido').textContent=rs(retidoTotal);
+  $('#k-retido-e').textContent=retidoTotal>0?'soma dos tributos retidos':'nenhuma retenção';
+
+  let h=L('Valor do serviço',rs(bruto))
+   +(ded>0?L('(−) Deduções',rs(ded),'muted'):'')
+   +L('Base de cálculo',rs(base))
+   +(aIss>0?L('ISS '+br(aIss)+'% '+(issRet?'(retido)':'(calculado)'),rs(iss),issRet?'':'muted'):'')
+   +(inssOn?L('INSS 11,00%',rs(inss)):'')
+   +(pccOn?L('PIS 0,65%',rs(pis))+L('COFINS 3,00%',rs(cof))+L('CSLL 1,00%',rs(csll)):'');
+
+  if(aIrrf>0){
+    h+=L('Cumulatividade do IRRF','','head')
+     +(acBase>0?L('Base acumulada do dia',rs(r2(base+acBase)),'muted'):'')
+     +L('IRRF '+br(aIrrf)+'% sobre o acumulado',rs(irrfAcum),'muted')
+     +(acIrrf>0?L('(−) já retido hoje',rs(acIrrf),'muted'):'')
+     +L('IRRF a reter neste documento',rs(irrf),'total');
+  }
+  if(dispensado) h+='<div class="flag">IRRF dispensado: o acumulado do dia ('+rs(irrfAcum)+') não supera o mínimo de '+rs(minIrrf)+'. Um novo pagamento hoje ao mesmo fornecedor pode ultrapassar o limite e tornar a retenção devida sobre o total.</div>';
+  $('#out-serv').innerHTML=h;
 
   const inc=[], bx=[];
-  if(issRet) inc.push(['ISS',iss,'ISS']); else if(iss>0) inc.push(['ISS calculado — sem título',iss,null]);
-  if(aIrrf>0) inc.push(['IRRF',irrf,'TX']);
+  if(issRet) inc.push(['ISS',iss,'ISS']); else if(iss>0) inc.push(['ISS calculado — sem título',iss,'']);
+  if(irrf>0) inc.push(['IRRF',irrf,'TX']);
   if(inssOn) inc.push(['INSS',inss,'INS']);
-  if(pccOn) [['PIS',pis],['COFINS',cof],['CSLL',csll]].forEach(([n,v])=>(caixa?bx:inc).push([n,v,'TX']));
-  const P=a=>a.length?a.map(([n,v,tp])=>tp
-      ?`<span class="pill"><b>${tp}</b> ${n} · ${br(v)}</span>`
-      :`<span class="pill none">${n} · ${br(v)}</span>`).join('')
-    :'<span class="pill none">nenhum título gerado</span>';
+  if(pccOn) [['PIS',pis],['COFINS',cof],['CSLL',csll]].forEach(function(t){ (caixa?bx:inc).push([t[0],t[1],'TX']); });
+  const P=a=>a.length?a.map(t=>L((t[2]?t[2]+' · ':'')+t[0],rs(t[1]),t[2]?'':'muted')).join('')
+    :L('nenhum título gerado','—','muted');
   $('#tl-inc').innerHTML=P(inc); $('#tl-bx').innerHTML=P(bx);
 }
 
-$$('input,select').forEach(el=>el.addEventListener('input',()=>{
-  $$('#presets button').forEach(b=>b.classList.remove('on')); calc();
-}));
-
+$('#p-serv').addEventListener('input',e=>{
+  if(e.target.matches('input,select')){ $$('#presets button').forEach(b=>b.classList.remove('on')); calcServ(); }
+});
 $('#presets').addEventListener('click',e=>{
   const b=e.target.closest('button'); if(!b)return;
   const p=PRESETS[+b.dataset.p];
   $('#i-bruto').value=p.bruto; $('#i-ded').value=p.ded; $('#i-iss').value=p.iss;
   $('#i-irrf').value=p.irrf; $('#i-issret').checked=p.issret; $('#i-inss').checked=p.inss;
   $('#i-pcc').checked=p.pcc; $('#i-regime').value=p.reg;
-  calc();
+  $('#i-acbase').value=0; $('#i-acirrf').value=0;
+  calcServ();
   $$('#presets button').forEach(x=>x.classList.toggle('on',x===b));
 });
 
-calc();
+/* ================= ALUGUEL PJ → PJ ================= */
+function pfRows(){ return $$('#g-rows .pf-row'); }
+
+function montarRows(){
+  const qtd=Math.min(10,Math.max(1,Math.floor(num('#g-qtd'))||1));
+  const atual=pfRows().map(r=>({p:r.querySelector('.pf-pct').value, d:r.querySelector('.pf-dep').value}));
+  let html='';
+  for(let i=0;i<qtd;i++){
+    const p=atual[i]!==undefined?atual[i].p:r2(100/qtd);
+    const d=atual[i]!==undefined?atual[i].d:0;
+    html+='<div class="pf-row"><span class="tagpf">PF '+String(i+1).padStart(2,'0')+'</span>'
+      +'<input type="number" class="pf-pct" value="'+p+'" step="0.01" min="0" max="100" aria-label="Participação da PF '+(i+1)+'">'
+      +'<input type="number" class="pf-dep" value="'+d+'" step="1" min="0" aria-label="Dependentes da PF '+(i+1)+'"></div>';
+  }
+  $('#g-rows').innerHTML=html;
+}
+function dividirIgual(){
+  const rows=pfRows(), n=rows.length;
+  const base=Math.floor(10000/n)/100;
+  rows.forEach((r,i)=>{ r.querySelector('.pf-pct').value = i===n-1 ? r2(100-base*(n-1)) : base; });
+  calcAlug();
+}
+
+function calcAlug(){
+  const tipo=$('#g-tipo').value;
+  const valor=num('#g-valor'), ded=num('#g-ded');
+  const rendTotal=Math.max(0,r2(valor-ded));
+  $('#g-repbox').style.display = tipo==='rep' ? '' : 'none';
+
+  if(tipo==='pj'){
+    $('#k-alug-tit').textContent=rs(valor);
+    $('#k-alug-irrf').textContent=rs(0);
+    $('#k-alug-irrf-e').textContent='não há retenção';
+    $('#k-alug-liq').textContent=rs(valor);
+    $('#out-alug').innerHTML=
+      L('Valor total do aluguel',rs(valor))
+      +(ded>0?L('(−) Deduções do imóvel',rs(ded),'muted'):'')
+      +L('IRRF',rs(0))
+      +L('Valor do título no Contas a Pagar',rs(valor),'total')
+      +'<div class="flag ok">Locador pessoa jurídica: o título entra pelo valor integral, sem retenção de IRRF. Confirme que a natureza de aluguel não tem Tipo de Retenção vinculado em FINA010 e que o fornecedor não carrega regras financeiras de PCC ou IRRF em MATA020.</div>';
+    return;
+  }
+
+  const modo=$('#g-modo').value;
+  const rows=pfRows();
+  let somaPct=0, totalIrrf=0, linhas='', alerta='', zerados=0;
+  const dados=rows.map((r,i)=>{
+    const pct=+r.querySelector('.pf-pct').value||0;
+    const deps=Math.max(0,Math.floor(+r.querySelector('.pf-dep').value||0));
+    somaPct=r2(somaPct+pct);
+    const bruto=r2(valor*pct/100);
+    const rend=r2(rendTotal*pct/100);
+    const c=irpf(rend,{deps:deps,modo:modo});
+    totalIrrf=r2(totalIrrf+c.imposto);
+    if(c.impBruto>0 && c.imposto===0) zerados++;
+    return {n:i+1,pct:pct,bruto:bruto,rend:rend,c:c};
+  });
+
+  dados.forEach(d=>{
+    linhas+='<tr><td>PF '+String(d.n).padStart(2,'0')+'</td><td>'+br(d.pct)+'%</td><td>'+br(d.rend)+'</td>'
+      +'<td>'+(d.c.aliq===0?'isento':br(d.c.aliq)+'%')+'</td><td>'+br(d.c.imposto)+'</td><td>'+br(r2(d.bruto-d.c.imposto))+'</td></tr>';
+  });
+  const liquido=r2(valor-totalIrrf);
+  linhas+='<tr class="sum"><td>Total</td><td>'+br(somaPct)+'%</td><td>'+br(rendTotal)+'</td><td>—</td>'
+    +'<td>'+br(totalIrrf)+'</td><td>'+br(liquido)+'</td></tr>';
+
+  if(Math.abs(somaPct-100)>0.009)
+    alerta+='<div class="flag">As participações somam '+br(somaPct)+'%. Ajuste para 100% — o rateio atual não distribui o valor integral do aluguel.</div>';
+  if(zerados>0)
+    alerta+='<div class="flag">'+zerados+' locador(es) sem retenção por efeito da redução mensal da Lei 15.270/2025. O rendimento continua tributável e deve constar do informe de rendimentos e da EFD-Reinf.</div>';
+  if(dados.length>1)
+    alerta+='<div class="flag ok">Cada pessoa física tem tabela e redutor próprios. Por isso o rateio reduz a retenção total em relação ao mesmo valor pago a um único beneficiário.</div>';
+
+  $('#k-alug-tit').textContent=rs(valor);
+  $('#k-alug-irrf').textContent=rs(totalIrrf);
+  $('#k-alug-irrf-e').textContent=dados.length+' beneficiário(s) pessoa física';
+  $('#k-alug-liq').textContent=rs(liquido);
+
+  $('#out-alug').innerHTML=
+    '<table class="tb"><thead><tr><th>Locador</th><th>%</th><th>Rendimento</th><th>Faixa</th><th>IRRF</th><th>Líquido</th></tr></thead><tbody>'
+    +linhas+'</tbody></table>'
+    +(ded>0?'<div class="line muted" style="margin-top:14px"><span>Deduções do imóvel rateadas</span><span>'+rs(ded)+'</span></div>':'')
+    +alerta;
+}
+
+$('#g-qtd').addEventListener('input',()=>{montarRows();calcAlug();});
+$('#g-igual').addEventListener('click',dividirIgual);
+$('#p-alug').addEventListener('input',e=>{ if(e.target.matches('input,select') && e.target.id!=='g-qtd') calcAlug(); });
+
+/* ================= ALUGUEL PJ → PF ================= */
+function calcPF(){
+  const valor=num('#a-valor'), iptu=num('#a-iptu'), cond=num('#a-cond'), adm=num('#a-adm');
+  const deps=Math.max(0,Math.floor(num('#a-dep'))), pensao=num('#a-pensao');
+  const acRend=num('#a-acrend'), acIrrf=num('#a-acirrf'), outros=num('#a-outros');
+  const modo=$('#a-modo').value;
+
+  const dedImovel=r2(iptu+cond+adm);
+  const rendDoc=Math.max(0,r2(valor-dedImovel));
+  const rendMes=r2(rendDoc+acRend);
+  const rendRedutor=r2(rendMes+outros);
+
+  const c=irpf(rendMes,{deps:deps,pensao:pensao,modo:modo,rendaRedutor:rendRedutor});
+  let aReter=r2(c.imposto-acIrrf); if(aReter<0)aReter=0;
+  const liquido=r2(valor-aReter);
+
+  $('#k-pf-irrf').textContent=rs(aReter);
+  $('#k-pf-irrf-e').textContent=c.aliq===0?'base na faixa isenta':'faixa de '+br(c.aliq)+'%';
+  $('#k-pf-liq').textContent=rs(liquido);
+  $('#k-pf-mes').textContent=rs(c.imposto);
+
+  let h=L('Valor do aluguel',rs(valor))
+   +(dedImovel>0?L('(−) IPTU, condomínio e administração',rs(dedImovel),'muted'):'')
+   +L('Rendimento tributável deste pagamento',rs(rendDoc))
+   +(acRend>0?L('(+) já pago no mês',rs(acRend),'muted')+L('Rendimento do mês',rs(rendMes)):'')
+   +L('(−) '+c.criterio,rs(c.desconto),'muted')
+   +L('Base de cálculo',rs(c.base))
+   +L('Tabela progressiva','','head')
+   +L('Faixa aplicável', c.aliq===0?'isento':br(c.aliq)+'%','muted')
+   +(c.aliq>0?L('(−) Parcela a deduzir',rs(c.parcela),'muted'):'')
+   +L('Imposto pela tabela',rs(c.impBruto))
+   +(outros>0?L('Renda do mês para o redutor',rs(rendRedutor),'muted'):'')
+   +L('(−) Redução mensal — Lei 15.270/2025',rs(c.red))
+   +L('Imposto do mês',rs(c.imposto))
+   +(acIrrf>0?L('(−) IRRF já retido no mês',rs(acIrrf),'muted'):'')
+   +L('IRRF a reter agora',rs(aReter),'total');
+
+  if(c.impBruto>0 && c.imposto===0)
+    h+='<div class="flag">Sem retenção neste mês: a redução zerou o imposto de '+rs(c.impBruto)+' apurado pela tabela. O rendimento continua tributável — informe na EFD-Reinf e no informe de rendimentos, porque o locador pode ter de complementar no ajuste anual.</div>';
+  else if(rendRedutor>5000 && rendRedutor<=7350)
+    h+='<div class="flag">Faixa de redução parcial (R$ 5.000,01 a R$ 7.350,00). O redutor decresce conforme a renda sobe e chega a zero em R$ 7.350,00.</div>';
+  if(acRend>0)
+    h+='<div class="flag ok">Segundo pagamento no mês: o imposto foi recalculado sobre o rendimento acumulado e o já retido foi abatido, conforme a regra de recálculo por fonte pagadora.</div>';
+  if(modo!=='legais' && c.desconto===SIMPL){
+    const semSimpl=irpf(rendMes,{deps:deps,pensao:pensao,modo:'legais',rendaRedutor:rendRedutor});
+    h+='<div class="flag">Ponto controverso: há entendimento de que o desconto simplificado não se aplica ao pagamento de aluguel, valendo apenas a tabela progressiva. Por essa leitura, o imposto do mês seria '+rs(semSimpl.imposto)+'. Defina o critério com a assessoria tributária antes de padronizar.</div>';
+  }
+  $('#out-pf').innerHTML=h;
+}
+$('#p-pjpf').addEventListener('input',e=>{ if(e.target.matches('input,select')) calcPF(); });
+
+montarRows();
+calcServ(); calcAlug(); calcPF();
 </script>
 </body>
 </html>
