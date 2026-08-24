@@ -60,59 +60,81 @@ body{
 .kpi.v::before{background:var(--verde)}
 .kpi.a::before{background:var(--amarelo)}
 .kpi.r::before{background:var(--vermelho)}
-.kpi span{
-  display:block;font-family:var(--cond);font-weight:600;font-size:11px;color:var(--gold);opacity:.85;
-}
-.kpi strong{
-  display:block;font-family:var(--cond);font-weight:700;font-size:22px;
-  line-height:1.15;margin-top:2px;color:var(--orange);
-}
-.kpi.v strong{color:var(--verde)}
-.kpi.a strong{color:var(--amarelo)}
-.kpi.r strong{color:var(--vermelho)}
-.kpi.r span{color:var(--vermelho);opacity:1}
+
+/* Cor do texto principal */
+.kpi strong{color:var(--txt);}
+.kpi.v strong{color:var(--verde);}
+.kpi.a strong{color:var(--amarelo);}
+.kpi.r strong{color:var(--vermelho);}
+
+/* Cor do rótulo */
+.kpi span{color:var(--muted);}
+.kpi.v span{color:var(--verde);}
+.kpi.r span{color:var(--vermelho);}
+
 .kpi em{
   display:block;font-style:normal;font-family:var(--mono);font-size:9.5px;color:#6E747B;
   margin-top:2px;line-height:1.3;
 }
+.kpi.v em{color:var(--verde); opacity: .8;}
+.kpi.r em{color:var(--vermelho); opacity: .8;}
 
+/* Grid Principal: Dividido em Blocos */
 .grid{
-  display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:12px;align-items:start;flex:1;
+  display:grid;
+  grid-template-columns: 1fr 1fr; /* Duas colunas iguais para a parte de baixo */
+  gap:12px;
+  align-items:start;
+  flex:1;
 }
 
-/* Painel de parâmetros - horizontal */
+/* Painel de Parâmetros - Ocupa a linha inteira */
 .block-param{
-  background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:10px 14px;
-  grid-column:1 / -1;flex-shrink:0;
+  background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:12px 16px;
+  grid-column: 1 / -1; /* Força ocupar as duas colunas */
+  flex-shrink:0;
 }
 .block-param h2{
-  font-family:var(--cond);font-weight:600;font-size:14px;color:var(--gold);margin:0 0 6px;
+  font-family:var(--cond);font-weight:600;font-size:14px;color:var(--gold);margin:0 0 12px;
   letter-spacing:.01em;display:flex;align-items:center;gap:8px;
 }
 .block-param h2::after{
   content:"";flex:1;height:1px;background:var(--edge);
 }
-.param-row{
-  display:grid;grid-template-columns:repeat(10,1fr);gap:8px;align-items:end;
-}
-.param-col{display:flex;flex-direction:column;gap:6px}
-.param-col.area{grid-column:span 2}
-.param-col.entradas{grid-column:span 2}
-.param-col.saidas{grid-column:span 2}
-.param-col.cbs-ent{grid-column:span 2}
-.param-col.cbs-sai{grid-column:span 2}
 
+/* Container dos Parâmetros Horizontal */
+.param-container{
+  display:grid;
+  grid-template-columns: 1.5fr 1fr 1fr; /* Área maior, Entradas, Saídas */
+  gap: 20px;
+  align-items: start;
+}
+
+/* Coluna da Área */
+.col-area {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Colunas Verticais (Entradas e Saídas) */
+.param-col-vertical{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Estilo dos Campos */
 .fld{margin-bottom:0}
 .fld label{
-  display:block;font-family:var(--cond);font-weight:600;font-size:11px;color:var(--gold);
-  opacity:.8;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  display:block;font-family:var(--cond);font-weight:600;font-size:12px;color:var(--gold);
+  opacity:.8;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .fld label u{
   text-decoration:none;font-family:var(--mono);font-weight:400;font-size:9px;color:#7B8189;
   display:block;margin-top:1px;
 }
 .fld input,.fld select{
-  width:100%;font-family:var(--mono);font-size:12.5px;padding:7px 9px;
+  width:100%;font-family:var(--mono);font-size:14px;padding:8px 10px;
   border:1px solid var(--edge2);border-radius:4px;background:#080808;color:var(--txt);
 }
 .fld input:focus,.fld select:focus{
@@ -122,36 +144,51 @@ body{
 .fld input.ent{border-left:3px solid var(--amarelo)}
 .fld input.sai{border-left:3px solid var(--verde)}
 
-/* Painel atual */
-.block-atual{
-  background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:10px 14px;
-}
-.block-atual h2{
-  font-family:var(--cond);font-weight:600;font-size:13px;color:var(--gold);margin:0 0 4px;
-  display:flex;align-items:center;gap:6px;
-}
-.block-atual .hint{
-  font-family:var(--mono);font-size:9.5px;color:#7B8189;line-height:1.5;margin:0 0 8px;
-}
-
 .ficha{
-  background:var(--card);border:1px solid var(--edge);border-radius:4px;padding:6px 8px;
-  margin-bottom:8px;
+  background:var(--card);border:1px solid var(--edge);border-radius:4px;padding:8px 10px;
+  margin-top:12px;
 }
 .ficha div{
-  display:flex;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:10.5px;
-  padding:3px 0;border-bottom:1px solid #1E1E1E;
+  display:flex;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:11px;
+  padding:4px 0;border-bottom:1px solid #1E1E1E;
 }
 .ficha div:last-child{border-bottom:0}
 .ficha span:first-child{color:#8E949B}
 .ficha span:last-child{color:var(--txt);text-align:right}
 
+/* Painel Atual - Coluna Esquerda Inferior */
+.block-atual{
+  background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:12px 14px;
+  grid-column: 1; /* Fica na coluna esquerda */
+}
+.block-atual h2{
+  font-family:var(--cond);font-weight:600;font-size:14px;color:var(--gold);margin:0 0 4px;
+  display:flex;align-items:center;gap:6px;
+}
+.block-atual .hint{
+  font-family:var(--mono);font-size:10px;color:#7B8189;line-height:1.5;margin:0 0 10px;
+}
+
+/* Painel Reforma - Coluna Esquerda Inferior (Abaixo da Atual) */
+.block-reforma{
+  background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:12px 14px;
+  grid-column: 1; /* Fica na coluna esquerda */
+  margin-top: 12px;
+}
+.block-reforma h2{
+  font-family:var(--cond);font-weight:600;font-size:14px;color:var(--gold);margin:0 0 4px;
+  display:flex;align-items:center;gap:6px;
+}
+.block-reforma .hint{
+  font-family:var(--mono);font-size:10px;color:#7B8189;line-height:1.5;margin:0 0 10px;
+}
+
 /* Tabelas compactas */
 table.q{
-  width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px;margin-bottom:2px;
+  width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12px;margin-bottom:2px;
 }
 table.q th{
-  font-family:var(--cond);font-weight:600;font-size:10px;letter-spacing:.03em;
+  font-family:var(--cond);font-weight:600;font-size:11px;letter-spacing:.03em;
   text-transform:uppercase;padding:0 0 5px 8px;border-bottom:1px solid var(--navy);
   text-align:right;color:var(--gold);opacity:.85;
 }
@@ -159,12 +196,12 @@ table.q th:first-child{text-align:left;padding-left:0;color:#8E949B}
 table.q th.ent{color:var(--amarelo);opacity:1}
 table.q th.sai{color:var(--verde);opacity:1}
 table.q td{
-  padding:5px 0 5px 8px;border-bottom:1px solid #1E1E1E;text-align:right;color:var(--txt);
-  font-size:11px;
+  padding:6px 0 6px 8px;border-bottom:1px solid #1E1E1E;text-align:right;color:var(--txt);
+  font-size:12px;
 }
 table.q td:first-child{text-align:left;padding-left:0;color:#B6BBC1}
 table.q tr.res td{
-  border-bottom:0;border-top:1px solid var(--edge2);font-weight:600;padding-top:7px;
+  border-bottom:0;border-top:1px solid var(--edge2);font-weight:600;padding-top:8px;
 }
 table.q td.credito{color:var(--verde);background:var(--verde-bg)}
 table.q td.debito{color:var(--amarelo);background:var(--amarelo-bg)}
@@ -173,25 +210,16 @@ table.q td.piora{color:var(--vermelho);font-weight:600}
 table.q td.melhora{color:var(--verde)}
 table.q tr.res td:first-child{color:var(--txt)}
 
-/* Painel reforma */
-.block-reforma{
-  background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:10px 14px;
-}
-.block-reforma h2{
-  font-family:var(--cond);font-weight:600;font-size:13px;color:var(--gold);margin:0 0 4px;
-  display:flex;align-items:center;gap:6px;
-}
-.block-reforma .hint{
-  font-family:var(--mono);font-size:9.5px;color:#7B8189;line-height:1.5;margin:0 0 8px;
-}
-
-/* Painel variação - destaque */
+/* Painel Variação - Coluna Direita Inferior */
 .block-var{
-  background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:10px 14px;
-  border-left:3px solid var(--orange);grid-column:1 / -1;flex-shrink:0;
+  background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:12px 14px;
+  border-left:4px solid var(--orange); /* Destaque */
+  grid-column: 2; /* Fica na coluna direita */
+  grid-row: 2 / span 2; /* Ocupa a altura das duas linhas da esquerda */
+  flex-shrink:0;
 }
 .block-var h2{
-  font-family:var(--cond);font-weight:600;font-size:14px;color:var(--orange);margin:0 0 6px;
+  font-family:var(--cond);font-weight:600;font-size:16px;color:var(--orange);margin:0 0 10px;
   display:flex;align-items:center;gap:8px;
 }
 .block-var h2::after{
@@ -199,8 +227,8 @@ table.q tr.res td:first-child{color:var(--txt)}
 }
 
 .legenda{
-  display:flex;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:9.5px;color:#8E949B;
-  margin-top:8px;
+  display:flex;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:10px;color:#8E949B;
+  margin-top:10px;
 }
 .legenda i{font-style:normal;display:inline-flex;align-items:center;gap:5px}
 .legenda b{width:8px;height:8px;border-radius:2px;display:inline-block}
@@ -208,7 +236,7 @@ table.q tr.res td:first-child{color:var(--txt)}
 .legenda b.a{background:var(--amarelo)}
 
 .flag{
-  font-family:var(--sans);font-size:11px;line-height:1.45;padding:7px 9px;margin-top:8px;
+  font-family:var(--sans);font-size:12px;line-height:1.5;padding:9px 11px;margin-top:10px;
   border-radius:4px;border-left:3px solid var(--gold);background:rgba(242,183,5,.07);
   color:#DCC48A;
 }
@@ -217,23 +245,23 @@ table.q tr.res td:first-child{color:var(--txt)}
 .flag b{font-weight:600}
 
 .refs{
-  font-family:var(--mono);font-size:9.5px;color:#71767D;line-height:1.6;margin:8px 0 0;
+  font-family:var(--mono);font-size:10px;color:#71767D;line-height:1.6;margin-top:12px;
   padding:10px 12px;background:var(--panel);border:1px solid var(--edge);border-radius:6px;
+  grid-column: 1 / -1;
 }
 .refs b{color:var(--muted);font-weight:500}
 
 @media(max-width:1100px){
-  .grid{grid-template-columns:1fr 1fr}
-  .block-param{grid-column:1 / -1}
-  .block-var{grid-column:1 / -1}
+  .grid{grid-template-columns:1fr;} /* Vira uma coluna só em telas menores */
+  .block-var{grid-column:1; grid-row:auto;}
+  .block-atual{grid-column:1;}
+  .block-reforma{grid-column:1;}
+  .param-container{grid-template-columns:1fr;}
 }
 @media(max-width:860px){
-  .grid,.kpis{grid-template-columns:1fr}
   .wrap{padding:10px}
   .top h1{font-size:20px}
   .kpi strong{font-size:18px}
-  .param-row{grid-template-columns:1fr 1fr}
-  .param-col.area,.param-col.entradas,.param-col.saidas,.param-col.cbs-ent,.param-col.cbs-sai{grid-column:span 1}
 }
 </style>
 </head>
@@ -248,18 +276,20 @@ table.q tr.res td:first-child{color:var(--txt)}
 </div>
 
 <div class="kpis">
-  <div class="kpi a"><span>Saldo a recolher hoje</span><strong id="k-atual">—</strong><em>débito menos crédito</em></div>
-  <div class="kpi a"><span>Saldo a recolher em 2027</span><strong id="k-reforma">—</strong><em id="k-reforma-e">—</em></div>
+  <div class="kpi" id="k-atual-card"><span>Saldo a recolher hoje</span><strong id="k-atual">—</strong><em>débito menos crédito</em></div>
+  <div class="kpi" id="k-reforma-card"><span>Saldo a recolher em 2027</span><strong id="k-reforma">—</strong><em id="k-reforma-e">—</em></div>
   <div class="kpi" id="kpi-var"><span id="k-var-t">Variação do saldo</span><strong id="k-var">—</strong><em id="k-var-e">—</em></div>
 </div>
 
 <div class="grid">
 
-  <!-- Painel de parâmetros - horizontal -->
+  <!-- Painel de Parâmetros (Largura Total no Topo) -->
   <div class="block-param">
     <h2>Parâmetros</h2>
-    <div class="param-row">
-      <div class="param-col area">
+    <div class="param-container">
+      
+      <!-- Coluna 1: Área de atuação -->
+      <div class="col-area">
         <div class="fld">
           <label>Área de atuação<u>define regime e alíquotas</u></label>
           <select id="area">
@@ -271,34 +301,35 @@ table.q tr.res td:first-child{color:var(--txt)}
         </div>
         <div class="ficha" id="ficha"></div>
       </div>
-      <div class="param-col entradas">
+
+      <!-- Coluna 2: Entradas (Valor + CBS) -->
+      <div class="param-col-vertical">
         <div class="fld">
           <label>Entradas<u>compras e insumos</u></label>
           <input type="text" inputmode="decimal" data-fmt="money" class="ent" id="entradas" value="300000,00">
         </div>
-      </div>
-      <div class="param-col saidas">
-        <div class="fld">
-          <label>Saídas<u>faturamento</u></label>
-          <input type="text" inputmode="decimal" data-fmt="money" class="sai" id="saidas" value="1000000,00">
-        </div>
-      </div>
-      <div class="param-col cbs-ent">
         <div class="fld">
           <label>CBS entradas %</label>
           <input type="text" inputmode="decimal" data-fmt="pct" id="cbs-ent" value="8,80">
         </div>
       </div>
-      <div class="param-col cbs-sai">
+
+      <!-- Coluna 3: Saídas (Valor + CBS) -->
+      <div class="param-col-vertical">
+        <div class="fld">
+          <label>Saídas<u>faturamento</u></label>
+          <input type="text" inputmode="decimal" data-fmt="money" class="sai" id="saidas" value="1000000,00">
+        </div>
         <div class="fld">
           <label>CBS saídas %</label>
           <input type="text" inputmode="decimal" data-fmt="pct" id="cbs-sai" value="8,80">
         </div>
       </div>
+
     </div>
   </div>
 
-  <!-- Tributação atual -->
+  <!-- Tributação Atual (Inferior Esquerdo) -->
   <div class="block-atual">
     <h2>Tributação atual</h2>
     <p class="hint">PIS e COFINS conforme o regime da área selecionada</p>
@@ -308,7 +339,7 @@ table.q tr.res td:first-child{color:var(--txt)}
     </table>
   </div>
 
-  <!-- Tributação reforma -->
+  <!-- Tributação Reforma (Inferior Esquerdo, abaixo da Atual) -->
   <div class="block-reforma">
     <h2>Tributação reforma — 2027</h2>
     <p class="hint">A alíquota da CBS é uma previsão de trabalho</p>
@@ -318,31 +349,25 @@ table.q tr.res td:first-child{color:var(--txt)}
     </table>
   </div>
 
-  <!-- Variação financeira em destaque -->
+  <!-- Variação Financeira (Inferior Direito, em Destaque) -->
   <div class="block-var">
     <h2>Variação financeira</h2>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-      <div>
-        <table class="q">
-          <thead><tr><th>Comparativo</th><th>Hoje</th><th>2027</th><th>Variação</th></tr></thead>
-          <tbody id="t-var"></tbody>
-        </table>
-        <div class="legenda">
-          <i><b class="v"></b> crédito — benefício</i>
-          <i><b class="a"></b> débito — ônus</i>
-        </div>
-      </div>
-      <div id="alertas"></div>
+    <table class="q">
+      <thead><tr><th>Comparativo</th><th>Hoje</th><th>2027</th><th>Variação</th></tr></thead>
+      <tbody id="t-var"></tbody>
+    </table>
+    <div class="legenda">
+      <i><b class="v"></b> crédito — benefício</i>
+      <i><b class="a"></b> débito — ônus</i>
     </div>
+    <div id="alertas"></div>
   </div>
 
-</div>
-
-<div class="refs">
-  <b>O que muda em 2027, conforme o Ministério da Fazenda:</b> início da cobrança da CBS pela alíquota cheia, extinção do PIS e da COFINS, redução do IPI a zero exceto para produtos manufaturados na Zona Franca de Manaus, e instituição do Imposto Seletivo. A transição do ICMS e do ISS para o IBS só começa em 2029.<br>
-  <b>Sobre as alíquotas:</b> a Reforma não fixa as alíquotas do IBS e da CBS. As alíquotas de referência são fixadas por resolução do Senado Federal, com base em cálculo do Tribunal de Contas da União, e revisadas anualmente durante a transição para manter a carga tributária. O percentual usado aqui é premissa de trabalho, não valor oficial.<br>
-  <b>Fontes:</b> Ministério da Fazenda — Reforma Tributária, Perguntas e Respostas · Lei Complementar nº 214/2025 · Emenda Constitucional nº 132/2023.
-</div>
+  <div class="refs">
+    <b>O que muda em 2027, conforme o Ministério da Fazenda:</b> início da cobrança da CBS pela alíquota cheia, extinção do PIS e da COFINS, redução do IPI a zero exceto para produtos manufaturados na Zona Franca de Manaus, e instituição do Imposto Seletivo. A transição do ICMS e do ISS para o IBS só começa em 2029.<br>
+    <b>Sobre as alíquotas:</b> a Reforma não fixa as alíquotas do IBS e da CBS. As alíquotas de referência são fixadas por resolução do Senado Federal, com base em cálculo do Tribunal de Contas da União, e revisadas anualmente durante a transição para manter a carga tributária. O percentual usado aqui é premissa de trabalho, não valor oficial.<br>
+    <b>Fontes:</b> Ministério da Fazenda — Reforma Tributária, Perguntas e Respostas · Lei Complementar nº 214/2025 · Emenda Constitucional nº 132/2023.
+  </div>
 
 </div>
 
@@ -451,9 +476,28 @@ function calcular(){
    +Lv('Débito', debAtual, debRef, 'debito', true)
    +Lv('Saldo a recolher', saldoAtual, saldoRef, '', true, true);
 
+  /* ====== NOVA LÓGICA DE CORES NOS CARDS ====== */
   $('#k-atual').textContent=rs(saldoAtual);
   $('#k-reforma').textContent=rs(saldoRef);
   $('#k-reforma-e').textContent=`CBS de ${pc(cbsSai)} sobre as saídas`;
+
+  // Card 1: Saldo Atual
+  const cardAtual = $('#k-atual-card');
+  cardAtual.className = 'kpi'; // Reseta classes
+  if (saldoAtual > 0) {
+    cardAtual.classList.add('r'); // Vermelho para débito/recolher
+  } else if (saldoAtual < 0) {
+    cardAtual.classList.add('v'); // Verde para crédito
+  }
+
+  // Card 2: Saldo Reforma
+  const cardReforma = $('#k-reforma-card');
+  cardReforma.className = 'kpi'; // Reseta classes
+  if (saldoRef > 0) {
+    cardReforma.classList.add('r'); // Vermelho para débito/recolher
+  } else if (saldoRef < 0) {
+    cardReforma.classList.add('v'); // Verde para crédito
+  }
 
   const dif=r2(saldoRef-saldoAtual);
   $('#k-var').textContent=rs(Math.abs(dif));
