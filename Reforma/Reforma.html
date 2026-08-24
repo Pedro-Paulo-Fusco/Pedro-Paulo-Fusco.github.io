@@ -21,66 +21,151 @@
 }
 *{box-sizing:border-box}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1080px;margin:0 auto;padding:22px}
+body{
+  margin:0;background:var(--bg);color:var(--txt);font-family:var(--sans);font-size:14px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.wrap{
+  max-width:1400px;margin:0 auto;padding:12px 16px;min-height:100vh;
+  display:flex;flex-direction:column;
+}
 
-.top{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:20px}
-.top h1{font-family:var(--cond);font-weight:700;font-size:31px;letter-spacing:.01em;color:var(--gold);margin:0;line-height:1.05}
-.top p{margin:4px 0 0;color:var(--gold);opacity:.72;font-family:var(--cond);font-weight:600;font-size:16px}
-.top nav{display:flex;gap:8px;flex-wrap:wrap}
-.top a{font-family:var(--cond);font-weight:600;font-size:13px;color:var(--muted);text-decoration:none;
-  border:1px solid var(--edge2);border-radius:4px;padding:8px 13px;white-space:nowrap}
+.top{
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  margin-bottom:10px;flex-shrink:0;
+}
+.top h1{
+  font-family:var(--cond);font-weight:700;font-size:24px;letter-spacing:.01em;color:var(--gold);
+  margin:0;line-height:1.05;
+}
+.top p{margin:2px 0 0;color:var(--gold);opacity:.72;font-family:var(--cond);font-weight:600;font-size:14px}
+.top nav{display:flex;gap:6px;flex-wrap:wrap}
+.top a{
+  font-family:var(--cond);font-weight:600;font-size:12px;color:var(--muted);text-decoration:none;
+  border:1px solid var(--edge2);border-radius:4px;padding:6px 10px;white-space:nowrap;
+}
 .top a:hover{color:var(--gold);border-color:var(--gold)}
 
-.block{background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:18px 20px 20px;margin-bottom:16px}
-.block>h2{font-family:var(--cond);font-weight:600;font-size:16px;color:var(--gold);margin:0 0 4px;letter-spacing:.01em}
-.block>h2+.hint{margin:0 0 14px}
-.hint{font-family:var(--mono);font-size:11px;color:#7B8189;line-height:1.6;margin:0 0 14px}
-.plain{background:none;border:0;border-top:1px solid var(--edge);border-radius:0;padding:14px 0 0;margin-bottom:0}
-
-.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
-.kpi{position:relative;background:var(--card);border:1px solid var(--edge);border-radius:6px;padding:16px 18px 15px}
-.kpi::before{content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:5px;border-radius:6px 6px 0 0;background:var(--blue)}
+.kpis{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px;flex-shrink:0;
+}
+.kpi{
+  position:relative;background:var(--card);border:1px solid var(--edge);border-radius:6px;
+  padding:10px 14px;display:flex;flex-direction:column;justify-content:center;
+}
+.kpi::before{
+  content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:4px;
+  border-radius:6px 6px 0 0;background:var(--blue);
+}
 .kpi.v::before{background:var(--verde)}
 .kpi.a::before{background:var(--amarelo)}
-.kpi span{display:block;font-family:var(--cond);font-weight:600;font-size:13px;color:var(--gold);opacity:.85}
-.kpi strong{display:block;font-family:var(--cond);font-weight:700;font-size:27px;color:var(--orange);line-height:1.15;margin-top:5px}
+.kpi.r::before{background:var(--vermelho)}
+.kpi span{
+  display:block;font-family:var(--cond);font-weight:600;font-size:11px;color:var(--gold);opacity:.85;
+}
+.kpi strong{
+  display:block;font-family:var(--cond);font-weight:700;font-size:22px;
+  line-height:1.15;margin-top:2px;color:var(--orange);
+}
 .kpi.v strong{color:var(--verde)}
 .kpi.a strong{color:var(--amarelo)}
-.kpi.r::before{background:var(--vermelho)}
 .kpi.r strong{color:var(--vermelho)}
 .kpi.r span{color:var(--vermelho);opacity:1}
-.kpi em{display:block;font-style:normal;font-family:var(--mono);font-size:10.5px;color:#6E747B;margin-top:4px;line-height:1.4}
+.kpi em{
+  display:block;font-style:normal;font-family:var(--mono);font-size:9.5px;color:#6E747B;
+  margin-top:2px;line-height:1.3;
+}
 
-.grid{display:grid;grid-template-columns:1fr 1.25fr;gap:16px;align-items:start}
-.fld{margin-bottom:12px}
-.fld label{display:block;font-family:var(--cond);font-weight:600;font-size:12.5px;color:var(--gold);opacity:.8;margin-bottom:5px}
-.fld label u{text-decoration:none;font-family:var(--mono);font-weight:400;font-size:10px;color:#7B8189;display:block;margin-top:2px}
-.fld input,.fld select{width:100%;font-family:var(--mono);font-size:14.5px;padding:9px 11px;border:1px solid var(--edge2);
-  border-radius:4px;background:#080808;color:var(--txt)}
-.fld input:focus,.fld select:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 2px rgba(242,183,5,.18)}
+.grid{
+  display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:12px;align-items:start;flex:1;
+}
+
+/* Painel de parâmetros - horizontal */
+.block-param{
+  background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:10px 14px;
+  grid-column:1 / -1;flex-shrink:0;
+}
+.block-param h2{
+  font-family:var(--cond);font-weight:600;font-size:14px;color:var(--gold);margin:0 0 6px;
+  letter-spacing:.01em;display:flex;align-items:center;gap:8px;
+}
+.block-param h2::after{
+  content:"";flex:1;height:1px;background:var(--edge);
+}
+.param-row{
+  display:grid;grid-template-columns:repeat(10,1fr);gap:8px;align-items:end;
+}
+.param-col{display:flex;flex-direction:column;gap:6px}
+.param-col.area{grid-column:span 2}
+.param-col.entradas{grid-column:span 2}
+.param-col.saidas{grid-column:span 2}
+.param-col.cbs-ent{grid-column:span 2}
+.param-col.cbs-sai{grid-column:span 2}
+
+.fld{margin-bottom:0}
+.fld label{
+  display:block;font-family:var(--cond);font-weight:600;font-size:11px;color:var(--gold);
+  opacity:.8;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.fld label u{
+  text-decoration:none;font-family:var(--mono);font-weight:400;font-size:9px;color:#7B8189;
+  display:block;margin-top:1px;
+}
+.fld input,.fld select{
+  width:100%;font-family:var(--mono);font-size:12.5px;padding:7px 9px;
+  border:1px solid var(--edge2);border-radius:4px;background:#080808;color:var(--txt);
+}
+.fld input:focus,.fld select:focus{
+  outline:0;border-color:var(--gold);box-shadow:0 0 0 2px rgba(242,183,5,.18);
+}
 .fld select{cursor:pointer}
 .fld input.ent{border-left:3px solid var(--amarelo)}
 .fld input.sai{border-left:3px solid var(--verde)}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-h3.sub{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#7B8189;
-  margin:18px 0 10px;padding-bottom:7px;border-bottom:1px solid var(--edge);font-weight:400}
 
-.ficha{background:var(--card);border:1px solid var(--edge);border-radius:6px;padding:12px 14px;margin-bottom:12px}
-.ficha div{display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:12.5px;padding:5px 0;border-bottom:1px solid #1E1E1E}
+/* Painel atual */
+.block-atual{
+  background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:10px 14px;
+}
+.block-atual h2{
+  font-family:var(--cond);font-weight:600;font-size:13px;color:var(--gold);margin:0 0 4px;
+  display:flex;align-items:center;gap:6px;
+}
+.block-atual .hint{
+  font-family:var(--mono);font-size:9.5px;color:#7B8189;line-height:1.5;margin:0 0 8px;
+}
+
+.ficha{
+  background:var(--card);border:1px solid var(--edge);border-radius:4px;padding:6px 8px;
+  margin-bottom:8px;
+}
+.ficha div{
+  display:flex;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:10.5px;
+  padding:3px 0;border-bottom:1px solid #1E1E1E;
+}
 .ficha div:last-child{border-bottom:0}
 .ficha span:first-child{color:#8E949B}
 .ficha span:last-child{color:var(--txt);text-align:right}
 
-table.q{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:13px;margin-bottom:4px}
-table.q th{font-family:var(--cond);font-weight:600;font-size:12px;letter-spacing:.05em;text-transform:uppercase;
-  padding:0 0 7px 12px;border-bottom:1px solid var(--navy);text-align:right;color:var(--gold);opacity:.85}
+/* Tabelas compactas */
+table.q{
+  width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px;margin-bottom:2px;
+}
+table.q th{
+  font-family:var(--cond);font-weight:600;font-size:10px;letter-spacing:.03em;
+  text-transform:uppercase;padding:0 0 5px 8px;border-bottom:1px solid var(--navy);
+  text-align:right;color:var(--gold);opacity:.85;
+}
 table.q th:first-child{text-align:left;padding-left:0;color:#8E949B}
 table.q th.ent{color:var(--amarelo);opacity:1}
 table.q th.sai{color:var(--verde);opacity:1}
-table.q td{padding:8px 0 8px 12px;border-bottom:1px solid #1E1E1E;text-align:right;color:var(--txt)}
+table.q td{
+  padding:5px 0 5px 8px;border-bottom:1px solid #1E1E1E;text-align:right;color:var(--txt);
+  font-size:11px;
+}
 table.q td:first-child{text-align:left;padding-left:0;color:#B6BBC1}
-table.q tr.res td{border-bottom:0;border-top:1px solid var(--edge2);font-weight:600;padding-top:10px}
+table.q tr.res td{
+  border-bottom:0;border-top:1px solid var(--edge2);font-weight:600;padding-top:7px;
+}
 table.q td.credito{color:var(--verde);background:var(--verde-bg)}
 table.q td.debito{color:var(--amarelo);background:var(--amarelo-bg)}
 table.q td.nulo{color:#5C6169}
@@ -88,27 +173,67 @@ table.q td.piora{color:var(--vermelho);font-weight:600}
 table.q td.melhora{color:var(--verde)}
 table.q tr.res td:first-child{color:var(--txt)}
 
-.legenda{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:#8E949B;margin-top:12px}
-.legenda i{font-style:normal;display:inline-flex;align-items:center;gap:6px}
-.legenda b{width:10px;height:10px;border-radius:2px;display:inline-block}
+/* Painel reforma */
+.block-reforma{
+  background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:10px 14px;
+}
+.block-reforma h2{
+  font-family:var(--cond);font-weight:600;font-size:13px;color:var(--gold);margin:0 0 4px;
+  display:flex;align-items:center;gap:6px;
+}
+.block-reforma .hint{
+  font-family:var(--mono);font-size:9.5px;color:#7B8189;line-height:1.5;margin:0 0 8px;
+}
+
+/* Painel variação - destaque */
+.block-var{
+  background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:10px 14px;
+  border-left:3px solid var(--orange);grid-column:1 / -1;flex-shrink:0;
+}
+.block-var h2{
+  font-family:var(--cond);font-weight:600;font-size:14px;color:var(--orange);margin:0 0 6px;
+  display:flex;align-items:center;gap:8px;
+}
+.block-var h2::after{
+  content:"";flex:1;height:1px;background:var(--edge);
+}
+
+.legenda{
+  display:flex;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:9.5px;color:#8E949B;
+  margin-top:8px;
+}
+.legenda i{font-style:normal;display:inline-flex;align-items:center;gap:5px}
+.legenda b{width:8px;height:8px;border-radius:2px;display:inline-block}
 .legenda b.v{background:var(--verde)}
 .legenda b.a{background:var(--amarelo)}
 
-.flag{font-family:var(--sans);font-size:13px;line-height:1.55;padding:11px 13px;margin-top:14px;border-radius:4px;
-  border-left:3px solid var(--gold);background:rgba(242,183,5,.07);color:#DCC48A}
+.flag{
+  font-family:var(--sans);font-size:11px;line-height:1.45;padding:7px 9px;margin-top:8px;
+  border-radius:4px;border-left:3px solid var(--gold);background:rgba(242,183,5,.07);
+  color:#DCC48A;
+}
 .flag.ok{border-left-color:var(--blue);background:rgba(31,79,214,.1);color:#A9BEEE}
 .flag.v{border-left-color:var(--verde);background:var(--verde-bg);color:#A9D8B4}
 .flag b{font-weight:600}
 
-.refs{font-family:var(--mono);font-size:11.5px;color:#71767D;line-height:1.7;margin:0}
+.refs{
+  font-family:var(--mono);font-size:9.5px;color:#71767D;line-height:1.6;margin:8px 0 0;
+  padding:10px 12px;background:var(--panel);border:1px solid var(--edge);border-radius:6px;
+}
 .refs b{color:var(--muted);font-weight:500}
 
+@media(max-width:1100px){
+  .grid{grid-template-columns:1fr 1fr}
+  .block-param{grid-column:1 / -1}
+  .block-var{grid-column:1 / -1}
+}
 @media(max-width:860px){
   .grid,.kpis{grid-template-columns:1fr}
-  .wrap{padding:14px}
-  .top h1{font-size:25px}
-  .kpi strong{font-size:24px}
-  table.q{font-size:12px}
+  .wrap{padding:10px}
+  .top h1{font-size:20px}
+  .kpi strong{font-size:18px}
+  .param-row{grid-template-columns:1fr 1fr}
+  .param-col.area,.param-col.entradas,.param-col.saidas,.param-col.cbs-ent,.param-col.cbs-sai{grid-column:span 1}
 }
 </style>
 </head>
@@ -129,77 +254,95 @@ table.q tr.res td:first-child{color:var(--txt)}
 </div>
 
 <div class="grid">
-  <div class="block">
+
+  <!-- Painel de parâmetros - horizontal -->
+  <div class="block-param">
     <h2>Parâmetros</h2>
-    <div class="fld">
-      <label>Área de atuação<u>define regime e alíquotas</u></label>
-      <select id="area">
-        <option value="limpeza">Serviços de Limpeza</option>
-        <option value="vigilancia">Serviços de Vigilância</option>
-        <option value="monitoramento">Serviços de Monitoramento</option>
-        <option value="obras">Execução de Obras</option>
-      </select>
+    <div class="param-row">
+      <div class="param-col area">
+        <div class="fld">
+          <label>Área de atuação<u>define regime e alíquotas</u></label>
+          <select id="area">
+            <option value="limpeza">Serviços de Limpeza</option>
+            <option value="vigilancia">Serviços de Vigilância</option>
+            <option value="monitoramento">Serviços de Monitoramento</option>
+            <option value="obras">Execução de Obras</option>
+          </select>
+        </div>
+        <div class="ficha" id="ficha"></div>
+      </div>
+      <div class="param-col entradas">
+        <div class="fld">
+          <label>Entradas<u>compras e insumos</u></label>
+          <input type="text" inputmode="decimal" data-fmt="money" class="ent" id="entradas" value="300000,00">
+        </div>
+      </div>
+      <div class="param-col saidas">
+        <div class="fld">
+          <label>Saídas<u>faturamento</u></label>
+          <input type="text" inputmode="decimal" data-fmt="money" class="sai" id="saidas" value="1000000,00">
+        </div>
+      </div>
+      <div class="param-col cbs-ent">
+        <div class="fld">
+          <label>CBS entradas %</label>
+          <input type="text" inputmode="decimal" data-fmt="pct" id="cbs-ent" value="8,80">
+        </div>
+      </div>
+      <div class="param-col cbs-sai">
+        <div class="fld">
+          <label>CBS saídas %</label>
+          <input type="text" inputmode="decimal" data-fmt="pct" id="cbs-sai" value="8,80">
+        </div>
+      </div>
     </div>
-
-    <div class="ficha" id="ficha"></div>
-
-    <h3 class="sub">Valor bruto do período</h3>
-    <div class="fld"><label>Entradas<u>compras e insumos</u></label>
-      <input type="text" inputmode="decimal" data-fmt="money" class="ent" id="entradas" value="300000,00"></div>
-    <div class="fld"><label>Saídas<u>faturamento</u></label>
-      <input type="text" inputmode="decimal" data-fmt="money" class="sai" id="saidas" value="1000000,00"></div>
-
-    <h3 class="sub">Alíquotas da CBS — simulação</h3>
-    <div class="row2">
-      <div class="fld"><label>CBS entradas %</label>
-        <input type="text" inputmode="decimal" data-fmt="pct" id="cbs-ent" value="8,80"></div>
-      <div class="fld"><label>CBS saídas %</label>
-        <input type="text" inputmode="decimal" data-fmt="pct" id="cbs-sai" value="8,80"></div>
-    </div>
-    <p class="hint">As alíquotas são preenchidas pela área de atuação e podem ser alteradas para testar outros cenários.</p>
   </div>
 
-  <div>
-    <div class="block">
-      <h2>Tributação atual</h2>
-      <p class="hint">PIS e COFINS conforme o regime da área selecionada</p>
-      <table class="q">
-        <thead><tr><th>Incidência</th><th class="ent">Entradas</th><th class="sai">Saídas</th></tr></thead>
-        <tbody id="t-atual"></tbody>
-      </table>
-    </div>
+  <!-- Tributação atual -->
+  <div class="block-atual">
+    <h2>Tributação atual</h2>
+    <p class="hint">PIS e COFINS conforme o regime da área selecionada</p>
+    <table class="q">
+      <thead><tr><th>Incidência</th><th class="ent">Entradas</th><th class="sai">Saídas</th></tr></thead>
+      <tbody id="t-atual"></tbody>
+    </table>
+  </div>
 
-    <div class="block">
-      <h2>Tributação reforma — a partir de 01/2027</h2>
-      <p class="hint">A alíquota da CBS ainda não foi fixada. O valor usado é uma previsão de trabalho.</p>
-      <table class="q">
-        <thead><tr><th>Incidência</th><th class="ent">Entradas</th><th class="sai">Saídas</th></tr></thead>
-        <tbody id="t-reforma"></tbody>
-      </table>
-    </div>
+  <!-- Tributação reforma -->
+  <div class="block-reforma">
+    <h2>Tributação reforma — 2027</h2>
+    <p class="hint">A alíquota da CBS é uma previsão de trabalho</p>
+    <table class="q">
+      <thead><tr><th>Incidência</th><th class="ent">Entradas</th><th class="sai">Saídas</th></tr></thead>
+      <tbody id="t-reforma"></tbody>
+    </table>
+  </div>
 
-    <div class="block">
-      <h2>Variação</h2>
-      <table class="q">
-        <thead><tr><th>Comparativo</th><th>Hoje</th><th>2027</th><th>Variação</th></tr></thead>
-        <tbody id="t-var"></tbody>
-      </table>
-      <div class="legenda">
-        <i><b class="v"></b> crédito — benefício financeiro</i>
-        <i><b class="a"></b> débito — ônus financeiro</i>
+  <!-- Variação financeira em destaque -->
+  <div class="block-var">
+    <h2>Variação financeira</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div>
+        <table class="q">
+          <thead><tr><th>Comparativo</th><th>Hoje</th><th>2027</th><th>Variação</th></tr></thead>
+          <tbody id="t-var"></tbody>
+        </table>
+        <div class="legenda">
+          <i><b class="v"></b> crédito — benefício</i>
+          <i><b class="a"></b> débito — ônus</i>
+        </div>
       </div>
       <div id="alertas"></div>
     </div>
   </div>
+
 </div>
 
-<div class="block plain">
-  <p class="refs"><b>O que muda em 2027, conforme o Ministério da Fazenda:</b> início da cobrança da CBS pela alíquota cheia, extinção do PIS e da COFINS, redução do IPI a zero exceto para produtos manufaturados na Zona Franca de Manaus, e instituição do Imposto Seletivo. A transição do ICMS e do ISS para o IBS só começa em 2029.<br>
+<div class="refs">
+  <b>O que muda em 2027, conforme o Ministério da Fazenda:</b> início da cobrança da CBS pela alíquota cheia, extinção do PIS e da COFINS, redução do IPI a zero exceto para produtos manufaturados na Zona Franca de Manaus, e instituição do Imposto Seletivo. A transição do ICMS e do ISS para o IBS só começa em 2029.<br>
   <b>Sobre as alíquotas:</b> a Reforma não fixa as alíquotas do IBS e da CBS. As alíquotas de referência são fixadas por resolução do Senado Federal, com base em cálculo do Tribunal de Contas da União, e revisadas anualmente durante a transição para manter a carga tributária. O percentual usado aqui é premissa de trabalho, não valor oficial.<br>
-  <b>Fontes:</b> Ministério da Fazenda — Reforma Tributária, Perguntas e Respostas · Lei Complementar nº 214/2025 · Emenda Constitucional nº 132/2023.</p>
+  <b>Fontes:</b> Ministério da Fazenda — Reforma Tributária, Perguntas e Respostas · Lei Complementar nº 214/2025 · Emenda Constitucional nº 132/2023.
 </div>
-
-<div class="block plain"><p class="refs">Ferramenta de simulação, com arredondamento de duas casas. Não considera IBS, Imposto Seletivo, redutores de base de cálculo, regimes específicos nem créditos acumulados de PIS/COFINS transportados para 2027.</p></div>
 
 </div>
 
@@ -294,7 +437,6 @@ function calcular(){
     const p=br(r2(Math.abs(para-de)/de*100));
     return (para>de?'aumenta ':'reduz ')+p+'%';
   };
-  /* onus=true quando o aumento representa piora: débito e saldo a recolher */
   const varCls=(de,para,onus)=>{
     if(de===0&&para===0) return '';
     if(de!==0&&r2(para)===r2(de)) return '';
